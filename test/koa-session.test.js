@@ -23,13 +23,6 @@ var EventEmitter = require('events').EventEmitter;
 describe('test/koa-session.test.js', function () {
   describe('init', function () {
     afterEach(mm.restore);
-
-    it('should error without secret', function () {
-      (function () {
-        Session();
-      }).should.throw('`secret` option required for sessions');
-    });
-
     it('should warn when in production', function (done) {
       mm(process.env, 'NODE_ENV', 'production');
       mm(console, 'warn', function (message) {
