@@ -2,7 +2,7 @@
   "name": "koa-sess",
   "description": "koa session store by memory, redis or others",
   "repository": "dead-horse/koa-session",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "keywords": ["koa", "middleware", "session"],
   "author": "dead_horse <dead_horse@qq.com>",
   "dependencies": {
