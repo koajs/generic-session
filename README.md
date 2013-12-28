@@ -55,6 +55,7 @@ app.listen(8080);
 
 * After add session middlware, you can use `this.session` to set or get the sessions. 
 * set `this.session = null;` will destroy this session.
+* Alter `this.session.cookie` can handle the cookie options of this user. Also you can use cookie options in session store, for example use `cookie.maxAge` as session store's ttl.
 
 ### Options
 
