@@ -24,9 +24,8 @@ app.keys = ['keys', 'keykeys'];
 app.proxy = true; // to support `X-Forwarded-*` header
 
 app.use(session({
-  secret: 'koa-session-secret',
+  key: 'koss:test_sid',
   cookie: {
-    httpOnly: true,
     maxAge: 86400,
     path: '/session'
   }
@@ -34,9 +33,8 @@ app.use(session({
 
 // will ignore repeat session
 app.use(session({
-  secret: 'koa-session-secret',
+  key: 'koss:test_sid',
   cookie: {
-    httpOnly: true,
     maxAge: 86400,
     path: '/session'
   }
