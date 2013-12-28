@@ -48,6 +48,9 @@ app.use(function *() {
   case '/session/remove':
     remove(this);
     break;
+  case '/session/httponly':
+    switchHttpOnly(this);
+    break;
   default: other(this);
   }
 });
@@ -61,6 +64,12 @@ function get(ctx) {
 function remove(ctx) {
   ctx.session = null;
   ctx.body = 0;
+}
+
+function switchHttpOnly(ctx) {
+  var httpOnly = ctx.session.cookie.httpOnly;
+  ctx.session.cookie.httpOnly = !httpOnly;
+  ctx.body = 'httpOnly: ' + !httpOnly;
 }
 
 function other(ctx) {

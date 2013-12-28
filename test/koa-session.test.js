@@ -18,6 +18,7 @@ var koa = require('koa');
 var app = require('./support/server');
 var request = require('supertest');
 var mm = require('mm');
+var should = require('should');
 var EventEmitter = require('events').EventEmitter;
 
 describe('test/koa-session.test.js', function () {
@@ -64,6 +65,33 @@ describe('test/koa-session.test.js', function () {
       .get('/session/get')
       .set('cookie', cookie)
       .expect(/2/, done);
+    });
+
+    it('should GET /session/httponly ok', function (done) {
+      request(app)
+      .get('/session/httponly')
+      .set('cookie', cookie)
+      .expect(/httpOnly: false/, function (err, res) {
+        should.not.exist(err);
+        cookie = res.headers['set-cookie'].join(';');
+        cookie.indexOf('httponly').should.equal(-1);
+        request(app)
+        .get('/session/get')
+        .set('cookie', cookie)
+        .expect(/3/, done);
+      });
+    });
+
+    it('should GET /session/httponly twice ok', function (done) {
+      request(app)
+      .get('/session/httponly')
+      .set('cookie', cookie)
+      .expect(/httpOnly: true/, function (err, res) {
+        should.not.exist(err);
+        cookie = res.headers['set-cookie'].join(';');
+        cookie.indexOf('httponly').should.above(0);
+        done();
+      });
     });
 
     it('should another user GET /session/get ok', function (done) {
