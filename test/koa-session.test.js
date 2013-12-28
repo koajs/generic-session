@@ -61,7 +61,7 @@ describe('test/koa-session.test.js', function () {
       .get('/session/get')
       .expect(/1/)
       .end(function (err, res) {
-        cookie = res.headers['set-cookie'];
+        cookie = res.headers['set-cookie'].join(';');
         done();
       });
     });
