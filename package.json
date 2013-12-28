@@ -2,7 +2,7 @@
   "name": "koa-sess",
   "description": "koa session store by memory, redis or others",
   "repository": "dead-horse/koa-session",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": ["koa", "middleware", "session"],
   "author": "dead_horse <dead_horse@qq.com>",
   "files": ["index.js"],
@@ -18,7 +18,7 @@
     "mm": "0.1.8",
     "mocha": "*",
     "mocha-lcov-reporter": "*",
-    "should": "*",
+    "should": "2.1.1",
     "supertest": "0.8.2",
     "travis-cov": "*"
   },
