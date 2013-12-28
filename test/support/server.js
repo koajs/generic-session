@@ -28,18 +28,29 @@ app.use(session({
   cookie: {
     httpOnly: true,
     maxAge: 86400,
-    path: '/'
+    path: '/session'
+  }
+}));
+
+// will ignore repeat session
+app.use(session({
+  secret: 'koa-session-secret',
+  cookie: {
+    httpOnly: true,
+    maxAge: 86400,
+    path: '/session'
   }
 }));
 
 app.use(function *() {
   switch (this.request.url) {
-  case '/get':
+  case '/session/get':
     get(this);
     break;
-  case '/remove':
+  case '/session/remove':
     remove(this);
     break;
+  default: other(this);
   }
 });
 
@@ -52,6 +63,10 @@ function get(ctx) {
 function remove(ctx) {
   ctx.session = null;
   ctx.body = 0;
+}
+
+function other(ctx) {
+  ctx.body = ctx.session ? 'has session' : 'no session';
 }
 
 app.on('error', function (err) {
