@@ -55,9 +55,7 @@ function remove(ctx) {
 }
 
 app.on('error', function (err) {
-  logger.error(err);
+  console.error(err.stack);
 });
 
 var app = module.exports = http.createServer(app.callback());
-
-app.listen(7001);

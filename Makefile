@@ -1,10 +1,10 @@
-TESTS = find test/*.test.js
+TESTS = test/*.test.js
 REPORTER = spec
-TIMEOUT = 1000
+TIMEOUT = 5000
 MOCHA_OPTS =
-
+NPM_INSTALL = npm install --registry=http://registry.cnpmjs.org --cache=${HOME}/.npm/.cache/cnpm --disturl=http://dist.u.qiniudn.com
 install:
-	@npm install --registry=http://registry.cnpmjs.org --cache=${HOME}/.npm/.cache/cnpm
+	@$(NPM_INSTALL)
 
 test: install
 	@NODE_ENV=test ./node_modules/mocha/bin/mocha \
@@ -33,4 +33,3 @@ contributors: install
 	@./node_modules/contributors/bin/contributors -f plain -o AUTHORS
 
 .PHONY: test
-

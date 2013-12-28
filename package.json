@@ -16,6 +16,7 @@
     "contributors": "*",
     "coveralls": "*",
     "koa": "0.1.2",
+    "mm": "0.1.8",
     "mocha": "*",
     "mocha-lcov-reporter": "*",
     "should": "*",
@@ -25,5 +26,13 @@
   "engines": {
     "node": ">= 0.11.9"
   },
+  "config": {
+    "blanket": {
+      "pattern": "//^((?!(node_modules|test)).)*$/"
+    },
+    "travis-cov": {
+      "threshold": 50
+    }
+  },  
   "license": "MIT"
 }
