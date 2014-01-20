@@ -2,7 +2,7 @@
   "name": "koa-sess",
   "description": "koa session store by memory, redis or others",
   "repository": "dead-horse/koa-session",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "keywords": ["koa", "middleware", "session"],
   "author": "dead_horse <dead_horse@qq.com>",
   "dependencies": {
@@ -31,6 +31,6 @@
     "travis-cov": {
       "threshold": 50
     }
-  },  
+  },
   "license": "MIT"
 }
