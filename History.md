@@ -1,17 +1,8 @@
 
-n.n.n / 2013-12-30 
+0.0.5 / 2013-12-30 
 ==================
 
   * add middware name session
-  * Release 0.0.4
-  * fix package.json
-  * Release 0.0.3
-  * update readme
-  * add cookie in session
-  * Release 0.0.2
-  * update readme
-  * remove secret
-  * use default cookie's signature
 
 0.0.4 / 2013-12-29 
 ==================
