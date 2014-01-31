@@ -1,4 +1,10 @@
 
+0.0.7 / 2014-02-01
+==================
+
+  * fix maxage and compat connect type maxAge
+  * add autod
+
 0.0.6 / 2014-01-20
 ==================
 
