@@ -40,10 +40,13 @@ app.use(session({
   }
 }));
 
-app.use(function *() {
+app.use(function *controllers() {
   switch (this.request.url) {
   case '/session/get':
     get(this);
+    break;
+  case '/session/nothing':
+    nothing(this);
     break;
   case '/session/remove':
     remove(this);
@@ -51,9 +54,14 @@ app.use(function *() {
   case '/session/httponly':
     switchHttpOnly(this);
     break;
-  default: other(this);
+  default:
+    other(this);
   }
 });
+
+function nothing (ctx) {
+  ctx.body = ctx.session.count;
+}
 
 function get(ctx) {
   ctx.session.count = ctx.session.count || 0;
