@@ -75,6 +75,7 @@ describe('test/koa-session.test.js', function () {
         should.not.exist(err);
         cookie = res.headers['set-cookie'].join(';');
         cookie.indexOf('httponly').should.equal(-1);
+        cookie.indexOf('expires=').should.above(0);
         request(app)
         .get('/session/get')
         .set('cookie', cookie)
@@ -90,6 +91,7 @@ describe('test/koa-session.test.js', function () {
         should.not.exist(err);
         cookie = res.headers['set-cookie'].join(';');
         cookie.indexOf('httponly').should.above(0);
+        cookie.indexOf('expires=').should.above(0);
         done();
       });
     });
@@ -98,6 +100,13 @@ describe('test/koa-session.test.js', function () {
       request(app)
       .get('/session/get')
       .expect(/1/, done);
+    });
+
+    it('should GET /session/nothing ok', function (done) {
+      request(app)
+        .get('/session/nothing')
+        .set('cookie', cookie)
+        .expect(/3/, done);
     });
 
     it('should wrong cookie GET /session/get ok', function (done) {

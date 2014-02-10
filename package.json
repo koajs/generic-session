@@ -6,6 +6,7 @@
   "keywords": ["koa", "middleware", "session"],
   "author": "dead_horse <dead_horse@qq.com>",
   "dependencies": {
+    "buffer-crc32": "0.2.1",
     "debug": "0.7.4",
     "uid2": "0.0.3"
   },
