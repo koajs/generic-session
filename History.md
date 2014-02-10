@@ -1,4 +1,14 @@
 
+0.0.8 / 2014-02-11
+==================
+
+  * Merge pull request #3 from dead-horse/fix-cookie
+  * get session error, throw it
+  * only set the cookie when sessin was modified
+  * Changed position of cookies.set
+  * fix test
+  * fix typo
+
 0.0.7 / 2014-02-01
 ==================
 
