@@ -5,7 +5,7 @@ koa session with redis
 
 [![NPM](https://nodei.co/npm/koa-sess.png?downloads=true)](https://nodei.co/npm/koa-sess/)
 
-## Usage  
+## Usage
 
 ### Example
 
@@ -53,7 +53,7 @@ var app = module.exports = http.createServer(app.callback());
 app.listen(8080);
 ```
 
-* After add session middlware, you can use `this.session` to set or get the sessions. 
+* After add session middlware, you can use `this.session` to set or get the sessions.
 * set `this.session = null;` will destroy this session.
 * Alter `this.session.cookie` can handle the cookie options of this user. Also you can use cookie options in session store, for example use `cookie.maxAge` as session store's ttl.
 
@@ -85,11 +85,16 @@ full list of cookie options, see [jed/cookies](https://github.com/jed/cookies#co
 
 You can use any other store to replace the default MemoryStore, just need these public api:
 
-* `get(sid)`: get session data by sid
-* `set(sid, val)`: set session data for sid
+* `get(sid)`: get session object by sid
+* `set(sid, sess, ttl)`: set session object for sid, with a ttl (in ms)
 * `destroy(sid)`: destory session for sid
 
 all these api need return a Promise, Thunk or generator.
+
+and use these events to report store's status.
+
+* `connect`
+* `disconnect`
 
 You can use [koa-redis](https://github.com/dead-horse/koa-redis) to store your session data with redis.
 
