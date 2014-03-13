@@ -59,7 +59,7 @@ app.use(function *controllers() {
   }
 });
 
-function nothing (ctx) {
+function nothing(ctx) {
   ctx.body = ctx.session.count;
 }
 

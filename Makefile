@@ -1,12 +1,13 @@
 TESTS = test/*.test.js
-REPORTER = spec
-TIMEOUT = 5000
+REPORTER = tap
+TIMEOUT = 3000
 MOCHA_OPTS =
-NPM_INSTALL = npm install --registry=http://registry.cnpmjs.org --cache=${HOME}/.npm/.cache/cnpm --disturl=http://dist.u.qiniudn.com
-install:
-	@$(NPM_INSTALL)
 
-test: install
+install:
+	@npm install --registry=http://registry.cnpmjs.org \
+		--disturl=http://cnpmjs.org/dist
+
+test:
 	@NODE_ENV=test ./node_modules/mocha/bin/mocha \
 		--harmony-generators \
 		--reporter $(REPORTER) \
@@ -15,25 +16,30 @@ test: install
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
+
 test-cov:
-	@$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=travis-cov
+	@NODE_ENV=test node --harmony \
+		node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha \
+		-- -u exports \
+		--reporter $(REPORTER) \
+		--timeout $(TIMEOUT) \
+		--require should \
+		$(MOCHA_OPTS) \
+		$(TESTS)
+	@-$(MAKE) check-coverage
 
-test-cov-html:
-	@rm -f coverage.html
-	@$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=html-cov > coverage.html
-	@ls -lh coverage.html
+check-coverage:
+	@./node_modules/.bin/istanbul check-coverage \
+		--statements 95 \
+		--functions 95 \
+		--branches 95 \
+		--lines 95
 
-test-coveralls: test
-	@echo TRAVIS_JOB_ID $(TRAVIS_JOB_ID)
-	@-$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=mocha-lcov-reporter | ./node_modules/coveralls/bin/coveralls.js
+cov:
+	@./node_modules/.bin/cov coverage
 
-test-all: test test-cov
-
-contributors: install
-	@./node_modules/contributors/bin/contributors -f plain -o AUTHORS
-
-autod: install
-	@./node_modules/.bin/autod -w
+autod:
+	@./node_modules/.bin/autod -w -e example.js
 	@$(MAKE) install
 
 .PHONY: test
