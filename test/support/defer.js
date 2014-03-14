@@ -1,5 +1,5 @@
 /**!
- * koa-session - test/support/server.js
+ * koa-session - test/support/defer.js
  * Copyright(c) 2013
  * MIT Licensed
  *
@@ -29,8 +29,9 @@ app.use(session({
   key: 'koss:test_sid',
   cookie: {
     maxAge: 86400,
-    path: '/session'
+    path: '/session',
   },
+  defer: true,
   store: store
 }));
 
@@ -40,7 +41,8 @@ app.use(session({
   cookie: {
     maxAge: 86400,
     path: '/session'
-  }
+  },
+  defer: true
 }));
 
 app.use(function *controllers() {
@@ -49,52 +51,60 @@ app.use(function *controllers() {
     this.staus = 404;
     break;
   case '/wrongpath':
-    this.body = !this.session ? 'no session' : 'has session';
+    this.body = !(yield this.session) ? 'no session' : 'has session';
     break;
   case '/session/notuse':
-    this.body = 'not touch session';
+    nosession(this);
     break;
   case '/session/get':
-    get(this);
+    yield get(this);
     break;
   case '/session/nothing':
-    nothing(this);
+    yield nothing(this);
     break;
   case '/session/remove':
-    remove(this);
+    yield remove(this);
     break;
   case '/session/httponly':
-    switchHttpOnly(this);
+    yield switchHttpOnly(this);
     break;
   default:
-    other(this);
+    yield other(this);
   }
 });
 
-function nothing(ctx) {
-  ctx.body = ctx.session.count;
+function nosession(ctx) {
+  ctx.body = ctx._session !== undefined ? 'has session' : 'no session';
 }
 
-function get(ctx) {
-  ctx.session.count = ctx.session.count || 0;
-  ctx.session.count++;
-  ctx.body = ctx.session.count;
+function *nothing(ctx) {
+  ctx.body = (yield ctx.session).count;
 }
 
-function remove(ctx) {
+function *get(ctx) {
+  var session = yield ctx.session;
+  session = yield ctx.session;
+  session.count = session.count || 0;
+  session.count++;
+  ctx.body = session.count;
+}
+
+function *remove(ctx) {
   ctx.session = null;
   ctx.body = 0;
 }
 
-function switchHttpOnly(ctx) {
-  var httpOnly = ctx.session.cookie.httpOnly;
-  ctx.session.cookie.httpOnly = !httpOnly;
+function *switchHttpOnly(ctx) {
+  var session = yield ctx.session;
+  var httpOnly = session.cookie.httpOnly;
+  session.cookie.httpOnly = !httpOnly;
   ctx.body = 'httpOnly: ' + !httpOnly;
 }
 
-function other(ctx) {
-  ctx.body = ctx.session !== undefined ? 'has session' : 'no session';
+function *other(ctx) {
+  ctx.body = (yield ctx.session) ? 'has session' : 'no session';
 }
 
+// app.listen(7001)
 var app = module.exports = http.createServer(app.callback());
 app.store = store;

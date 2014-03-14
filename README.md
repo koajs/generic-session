@@ -1,4 +1,4 @@
-koa-session [![Build Status](https://secure.travis-ci.org/dead-horse/koa-session.png)](http://travis-ci.org/dead-horse/koa-session) [![Coverage Status](https://coveralls.io/repos/dead-horse/koa-session/badge.png)](https://coveralls.io/r/dead-horse/koa-session) [![Dependency Status](https://gemnasium.com/dead-horse/koa-session.png)](https://gemnasium.com/dead-horse/koa-session)
+koa-session [![Build Status](https://secure.travis-ci.org/dead-horse/koa-session.png)](http://travis-ci.org/dead-horse/koa-session) [![Dependency Status](https://gemnasium.com/dead-horse/koa-session.png)](https://gemnasium.com/dead-horse/koa-session)
 =========
 
 koa session with redis
@@ -9,19 +9,18 @@ koa session with redis
 
 ### Example
 
-```javascript
+```
 var koa = require('koa');
 var http = require('http');
 var session = require('koa-sess');
+var RedisStore = require('koa-redis');
 
 var app = koa();
-
-app.name = 'koa-session-test';
-app.outputErrors = true;
 app.keys = ['keys', 'keykeys'];
-app.proxy = true; // to support `X-Forwarded-*` header
-
-app.use(session());
+app.use(session({
+  defer: true,
+  store: new RedisStore()
+}));
 
 app.use(function *() {
   switch (this.request.url) {
@@ -35,9 +34,10 @@ app.use(function *() {
 });
 
 function get(ctx) {
-  ctx.session.count = ctx.session.count || 0;
-  ctx.session.count++;
-  ctx.body = ctx.session.count;
+  var session = yield ctx.session;  // defer generate session
+  session.count = session.count || 0;
+  session.count++;
+  var body = session.count;
 }
 
 function remove(ctx) {
@@ -60,6 +60,7 @@ app.listen(8080);
 ### Options
 
 ```
+ *`defer`: defer get session, only generate session when you use it by `var session = yield this.session;`, default is false.
  *`key` cookie name defaulting to `koa.sid`
  *`store` session store instance
  *`cookie` session cookie settings, defaulting to
