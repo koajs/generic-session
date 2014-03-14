@@ -15,6 +15,7 @@
 var koa = require('koa');
 var http = require('http');
 var session = require('../../');
+var Store = require('./store');
 
 var app = koa();
 
@@ -27,7 +28,8 @@ app.use(session({
   key: 'koss:test_sid',
   cookie: {
     maxAge: 86400,
-    path: '/session'
+    path: '/session',
+    store: new Store()
   },
   defer: true
 }));

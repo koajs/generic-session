@@ -15,6 +15,7 @@
 var koa = require('koa');
 var http = require('http');
 var session = require('../../');
+var Store = require('./store');
 
 var app = koa();
 
@@ -28,7 +29,8 @@ app.use(session({
   cookie: {
     maxAge: 86400,
     path: '/session'
-  }
+  },
+  store: new Store()
 }));
 
 // will ignore repeat session
