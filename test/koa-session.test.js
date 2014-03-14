@@ -123,6 +123,13 @@ describe('test/koa-session.test.js', function () {
       .expect(/1/, done);
     });
 
+    it('should GET /wrongpath response no session', function (done) {
+      request(app)
+      .get('/wrongpath')
+      .set('cookie', cookie)
+      .expect(/no session/, done);
+    });
+
     it('should GET /session/remove ok', function (done) {
       request(app)
       .get('/session/remove')

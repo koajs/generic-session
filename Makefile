@@ -32,7 +32,7 @@ check-coverage:
 	@./node_modules/.bin/istanbul check-coverage \
 		--statements 95 \
 		--functions 95 \
-		--branches 95 \
+		--branches 85 \
 		--lines 95
 
 cov:

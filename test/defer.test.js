@@ -1,5 +1,5 @@
 /**!
- * koa-session - test/koa-session.test.js
+ * koa-session - test/defer.test.js
  * Copyright(c) 2013
  * MIT Licensed
  *
@@ -85,6 +85,20 @@ describe('test/defer.test.js', function () {
         .expect(/3/, done);
     });
 
+    it('should GET /session/notuse response no session', function (done) {
+      request(app)
+      .get('/session/notuse')
+      .set('cookie', cookie)
+      .expect(/no session/, done);
+    });
+
+    it('should GET /wrongpath response no session', function (done) {
+      request(app)
+      .get('/wrongpath')
+      .set('cookie', cookie)
+      .expect(/no session/, done);
+    });
+
     it('should wrong cookie GET /session/get ok', function (done) {
       request(app)
       .get('/session/get')
@@ -121,6 +135,12 @@ describe('test/defer.test.js', function () {
       request(app)
       .get('/session')
       .expect(/has session/, done);
+    });
+
+    it('should GET /session/remove before get ok', function (done) {
+      request(app)
+      .get('/session/remove')
+      .expect(/0/, done);
     });
   });
 });

@@ -24,13 +24,14 @@ app.outputErrors = true;
 app.keys = ['keys', 'keykeys'];
 app.proxy = true; // to support `X-Forwarded-*` header
 
+var store = new Store();
 app.use(session({
   key: 'koss:test_sid',
   cookie: {
     maxAge: 86400,
     path: '/session'
   },
-  store: new Store()
+  store: store
 }));
 
 // will ignore repeat session
@@ -44,6 +45,15 @@ app.use(session({
 
 app.use(function *controllers() {
   switch (this.request.url) {
+  case '/favicon.ico':
+    this.staus = 404;
+    break;
+  case '/wrongpath':
+    this.body = !this.session ? 'no session' : 'has session';
+    break;
+  case '/session/notuse':
+    this.body = 'not touch session';
+    break;
   case '/session/get':
     get(this);
     break;
@@ -83,11 +93,8 @@ function switchHttpOnly(ctx) {
 }
 
 function other(ctx) {
-  ctx.body = ctx.session ? 'has session' : 'no session';
+  ctx.body = ctx.session !== undefined ? 'has session' : 'no session';
 }
 
-app.on('error', function (err) {
-  console.error(err.stack);
-});
-
 var app = module.exports = http.createServer(app.callback());
+app.store = store;
