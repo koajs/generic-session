@@ -1,4 +1,16 @@
 
+0.2.0 / 2014-03-14
+==================
+
+  * Merge pull request #7 from dead-horse/issue6-defer
+  * remove coverage
+  * update readme
+  * fix travis
+  * finish defer, fixed #6
+  * get session return status
+  * add test for defer
+  * add defer session
+
 0.1.0 / 2014-02-27
 ==================
 
