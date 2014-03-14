@@ -51,6 +51,10 @@ app.use(function *controllers() {
   case '/wrongpath':
     this.body = !this.session ? 'no session' : 'has session';
     break;
+  case '/session/rewrite':
+    this.session = {foo: 'bar'};
+    this.body = this.session;
+    break;
   case '/session/notuse':
     this.body = 'not touch session';
     break;

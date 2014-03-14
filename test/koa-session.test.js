@@ -153,5 +153,11 @@ describe('test/koa-session.test.js', function () {
       .get('/session')
       .expect(/has session/, done);
     });
+
+    it('should rewrite session before get ok', function (done) {
+      request(app)
+      .get('/session/rewrite')
+      .expect({foo: 'bar'}, done);
+    });
   });
 });

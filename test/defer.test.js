@@ -142,5 +142,11 @@ describe('test/defer.test.js', function () {
       .get('/session/remove')
       .expect(/0/, done);
     });
+
+    it('should rewrite session before get ok', function (done) {
+      request(app)
+      .get('/session/rewrite')
+      .expect({foo: 'bar'}, done);
+    });
   });
 });

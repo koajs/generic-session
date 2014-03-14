@@ -51,7 +51,11 @@ app.use(function *controllers() {
     this.staus = 404;
     break;
   case '/wrongpath':
-    this.body = !(yield this.session) ? 'no session' : 'has session';
+    this.body = this.session ? 'has session' : 'no session';
+    break;
+  case '/session/rewrite':
+    this.session = {foo: 'bar'};
+    this.body = yield this.session;
     break;
   case '/session/notuse':
     nosession(this);
@@ -102,7 +106,7 @@ function *switchHttpOnly(ctx) {
 }
 
 function *other(ctx) {
-  ctx.body = (yield ctx.session) ? 'has session' : 'no session';
+  ctx.body = ctx.session ? 'has session' : 'no session';
 }
 
 // app.listen(7001)
