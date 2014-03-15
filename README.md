@@ -1,7 +1,11 @@
 koa-session [![Build Status](https://secure.travis-ci.org/dead-horse/koa-session.png)](http://travis-ci.org/dead-horse/koa-session) [![Dependency Status](https://gemnasium.com/dead-horse/koa-session.png)](https://gemnasium.com/dead-horse/koa-session)
 =========
 
-koa session with redis
+session middlewares fro koa, easy use with cumstom stores such as [redis](https://github.com/dead-horse/koa-redis), support defer session getter.
+
+this middleware will only set cookie when session is manual set. each time session modified (and only when session modified), it will reset cookie and session.
+
+you can use the rolling sessions, that will reset the cookie and session for every request which touch the session.
 
 [![NPM](https://nodei.co/npm/koa-sess.png?downloads=true)](https://nodei.co/npm/koa-sess/)
 
@@ -65,6 +69,7 @@ app.listen(8080);
  *`store` session store instance
  *`cookie` session cookie settings, defaulting to
     {path: '/', httpOnly: true, maxAge: null, rewrite: true, signed: true}
+ * `rolling`: rolling session, always reset the cookie and sessions, default is false
  ```
 
 * Store can be any Object have `set`, `get`, `destroy` like [MemoryStore](https://github.com/dead-horse/koa-session/blob/master/lib/store.js).
@@ -102,7 +107,7 @@ You can use [koa-redis](https://github.com/dead-horse/koa-redis) to store your s
 ## Licences
 (The MIT License)
 
-Copyright (c) 2013 dead-horse and other contributors
+Copyright (c) 2013 - 2014 dead-horse and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
