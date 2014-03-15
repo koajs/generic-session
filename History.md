@@ -1,4 +1,13 @@
 
+0.3.0 / 2014-03-15
+==================
+
+  * Merge pull request #11 from dead-horse/issue9-rolling-session
+  * fix readme
+  * add rolling session options, fixed #9
+  * Merge pull request #10 from dead-horse/issue8-refresh
+  * fixed #8, only gen cookie and set session when session is really modified
+
 0.2.1 / 2014-03-14
 ==================
 
