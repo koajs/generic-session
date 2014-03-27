@@ -27,6 +27,8 @@ app.proxy = true; // to support `X-Forwarded-*` header
 var store = new Store();
 app.use(session({
   key: 'koss:test_sid',
+  prefix: 'koss:test',
+  ttl: 1000,
   cookie: {
     maxAge: 86400,
     path: '/session'
