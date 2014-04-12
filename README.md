@@ -1,7 +1,7 @@
-koa-session [![Build Status](https://secure.travis-ci.org/dead-horse/koa-session.png)](http://travis-ci.org/dead-horse/koa-session) [![Dependency Status](https://gemnasium.com/dead-horse/koa-session.png)](https://gemnasium.com/dead-horse/koa-session)
+koa-session [![Build Status](https://secure.travis-ci.org/node-modules/koa-session.png)](http://travis-ci.org/node-modules/koa-session) [![Dependency Status](https://gemnasium.com/node-modules/koa-session.png)](https://gemnasium.com/node-modules/koa-session)
 =========
 
-session middlewares fro koa, easy use with cumstom stores such as [redis](https://github.com/dead-horse/koa-redis), support defer session getter.
+session middlewares fro koa, easy use with cumstom stores such as [redis](https://github.com/node-modules/koa-redis), support defer session getter.
 
 this middleware will only set cookie when session is manual set. each time session modified (and only when session modified), it will reset cookie and session.
 
@@ -72,7 +72,7 @@ app.listen(8080);
  * `rolling`: rolling session, always reset the cookie and sessions, default is false
  ```
 
-* Store can be any Object have `set`, `get`, `destroy` like [MemoryStore](https://github.com/dead-horse/koa-session/blob/master/lib/store.js).
+* Store can be any Object have `set`, `get`, `destroy` like [MemoryStore](https://github.com/node-modules/koa-session/blob/master/lib/store.js).
 * cookie defaulting to
 
 ```
@@ -102,7 +102,7 @@ and use these events to report store's status.
 * `connect`
 * `disconnect`
 
-You can use [koa-redis](https://github.com/dead-horse/koa-redis) to store your session data with redis.
+You can use [koa-redis](https://github.com/node-modules/koa-redis) to store your session data with redis.
 
 ## Licences
 (The MIT License)
