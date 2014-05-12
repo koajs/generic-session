@@ -66,6 +66,7 @@ app.listen(8080);
 ```
  *`defer`: defer get session, only generate session when you use it by `var session = yield this.session;`, default is false.
  *`key` cookie name defaulting to `koa.sid`
+ *`prefix` session prefix for store, defaulting to `koa:sess:`
  *`store` session store instance
  *`cookie` session cookie settings, defaulting to
     {path: '/', httpOnly: true, maxAge: null, rewrite: true, signed: true}
