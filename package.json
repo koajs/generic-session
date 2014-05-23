@@ -6,21 +6,21 @@
   "keywords": ["koa", "middleware", "session"],
   "author": "dead_horse <dead_horse@qq.com>",
   "dependencies": {
-    "buffer-crc32": "0.2.1",
-    "copy-to": "0.0.2",
-    "debug": "0.7.4",
-    "uid2": "0.0.3"
+    "buffer-crc32": "~0.2.1",
+    "copy-to": "~1.0.1",
+    "debug": "~0.8.1",
+    "uid2": ">=0.0.3"
   },
   "devDependencies": {
-    "autod": "0.1.x",
+    "autod": "~0.1.0",
     "blanket": "*",
     "contributors": "*",
-    "istanbul": "git://github.com/gotwarlost/istanbul.git#harmony",
-    "koa": "0.5.2",
-    "mm": "0.2.1",
+    "istanbul-harmony": "*",
+    "koa": "~0.6.1",
+    "mm": "~0.2.1",
     "mocha": "*",
-    "should": "3.2.0-beta1",
-    "supertest": "0.10.0"
+    "should": "~3.3.1",
+    "supertest": "~0.10.0"
   },
   "engines": {
     "node": ">= 0.11.9"
