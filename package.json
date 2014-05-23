@@ -20,7 +20,8 @@
     "mm": "~0.2.1",
     "mocha": "*",
     "should": "~3.3.1",
-    "supertest": "~0.10.0"
+    "supertest": "~0.10.0",
+    "koa-redis": "*"
   },
   "engines": {
     "node": ">= 0.11.9"

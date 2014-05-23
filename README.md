@@ -14,46 +14,40 @@ you can use the rolling sessions, that will reset the cookie and session for eve
 ### Example
 
 ```
+
 var koa = require('koa');
-var http = require('http');
 var session = require('koa-sess');
 var RedisStore = require('koa-redis');
 
 var app = koa();
 app.keys = ['keys', 'keykeys'];
 app.use(session({
-  defer: true,
   store: new RedisStore()
 }));
 
 app.use(function *() {
-  switch (this.request.url) {
+  switch (this.path) {
   case '/get':
-    get(this);
+    get.call(this);
     break;
   case '/remove':
-    remove(this);
+    remove.call(this);
     break;
   }
 });
 
-function get(ctx) {
-  var session = yield ctx.session;  // defer generate session
+function get() {
+  var session = this.session;
   session.count = session.count || 0;
   session.count++;
-  var body = session.count;
+  this.body = session.count;
 }
 
-function remove(ctx) {
-  ctx.session = null;
-  ctx.body = 0;
+function remove() {
+  this.session = null;
+  this.body = 0;
 }
 
-app.on('error', function (err) {
-  console.error(err.stack);
-});
-
-var app = module.exports = http.createServer(app.callback());
 app.listen(8080);
 ```
 
