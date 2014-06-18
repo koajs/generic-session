@@ -9,7 +9,7 @@
     "buffer-crc32": "~0.2.1",
     "copy-to": "~1.0.1",
     "debug": "~0.8.1",
-    "uid2": ">=0.0.3"
+    "uid-safe": "~1.0.0"
   },
   "devDependencies": {
     "autod": "~0.1.0",
