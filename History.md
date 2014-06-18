@@ -1,4 +1,12 @@
 
+n.n.n / 2014-06-18
+==================
+
+  * use uid-safe to generate default sid
+  * maxAge -> maxage, close #18
+  * Merge pull request #17 from yoshuawuyts/patch-1
+  * Update README.md
+
 0.3.3 / 2014-05-23
 ==================
 
