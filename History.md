@@ -1,5 +1,5 @@
 
-n.n.n / 2014-06-18
+0.4.0 / 2014-06-18
 ==================
 
   * use uid-safe to generate default sid
