@@ -1,6 +1,8 @@
 koa-session [![Build Status](https://secure.travis-ci.org/koajs/koa-session.svg)](http://travis-ci.org/koajs/koa-session)
 =========
 
+**THIS MODULE RENAMED TO KOA-GENERIC-SESSION IN NPM.**
+
 session middlewares fro koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis), supports defer session getter.
 
 This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the is session modified), it will reset the cookie and session.
