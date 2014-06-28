@@ -1,27 +1,27 @@
 {
-  "name": "koa-sess",
-  "description": "koa session store by memory, redis or others",
-  "repository": "dead-horse/koa-session",
-  "version": "0.4.1",
+  "name": "koa-generic-session",
+  "description": "koa generic session store by memory, redis or others",
+  "repository": "koajs/generic-session",
+  "version": "1.0.0",
   "keywords": ["koa", "middleware", "session"],
   "author": "dead_horse <dead_horse@qq.com>",
   "dependencies": {
-    "buffer-crc32": "~0.2.1",
+    "buffer-crc32": "~0.2.3",
     "copy-to": "~1.0.1",
-    "debug": "~0.8.1",
-    "uid-safe": "~1.0.0"
+    "debug": "~1.0.2",
+    "uid-safe": "~1.0.1"
   },
   "devDependencies": {
-    "autod": "~0.1.0",
+    "autod": "~0.2.0",
     "blanket": "*",
     "contributors": "*",
     "istanbul-harmony": "*",
-    "koa": "~0.6.1",
+    "koa": "~0.8.1",
+    "koa-redis": "*",
     "mm": "~0.2.1",
     "mocha": "*",
-    "should": "~3.3.1",
-    "supertest": "~0.10.0",
-    "koa-redis": "*"
+    "should": "~4.0.4",
+    "supertest": "~0.13.0"
   },
   "engines": {
     "node": ">= 0.11.9"

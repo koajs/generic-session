@@ -1,5 +1,5 @@
 /**!
- * koa-session - test/support/server.js
+ * koa-generic-session - test/support/server.js
  * Copyright(c) 2013
  * MIT Licensed
  *

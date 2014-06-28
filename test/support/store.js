@@ -1,5 +1,5 @@
 /*!
- * koa-session - test/support/store.js
+ * koa-generic-session - test/support/store.js
  * Copyright(c) 2014 dead_horse <dead_horse@qq.com>
  * MIT Licensed
  */

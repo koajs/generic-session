@@ -1,9 +1,7 @@
-koa-session [![Build Status](https://secure.travis-ci.org/koajs/koa-session.svg)](http://travis-ci.org/koajs/koa-session)
+generic-session [![Build Status](https://secure.travis-ci.org/koajs/generic-session.svg)](http://travis-ci.org/koajs/generic-session)
 =========
 
-**THIS MODULE RENAMED TO KOA-GENERIC-SESSION IN NPM.**
-
-session middlewares fro koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis), supports defer session getter.
+Generic session middleware fro koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis), supports defer session getter. different from [koa-session](https://github.com/koajs/session)(it is cookie session).
 
 This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the is session modified), it will reset the cookie and session.
 
@@ -18,7 +16,7 @@ You can use the rolling sessions that will reset the cookie and session for ever
 ```js
 
 var koa = require('koa');
-var session = require('koa-sess');
+var session = require('koa-generic-session');
 var RedisStore = require('koa-redis');
 
 var app = koa();

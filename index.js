@@ -1,2 +1,2 @@
 
-module.exports = require('./lib/koa-session');
+module.exports = require('./lib/session');

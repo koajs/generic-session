@@ -1,5 +1,5 @@
 /**!
- * koa-session - test/defer.test.js
+ * koa-generic-session - test/defer.test.js
  * Copyright(c) 2013
  * MIT Licensed
  *

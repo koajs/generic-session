@@ -1,5 +1,5 @@
 /**!
- * koa-session - test/koa-session.test.js
+ * koa-generic-session - test/session.test.js
  * Copyright(c) 2013
  * MIT Licensed
  *
@@ -27,7 +27,7 @@ describe('test/koa-session.test.js', function () {
     it('should warn when in production', function (done) {
       mm(process.env, 'NODE_ENV', 'production');
       mm(console, 'warn', function (message) {
-        message.should.equal('Warning: koa.sess() MemoryStore is not\n' +
+        message.should.equal('Warning: koa-generic-session\'s MemoryStore is not\n' +
         'designed for a production environment, as it will leak\n' +
         'memory, and will not scale past a single process.');
         done();
