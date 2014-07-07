@@ -82,9 +82,9 @@ app.listen(8080);
 
 For a full list of cookie options see [jed/cookies](https://github.com/jed/cookies#cookiesset-name--value---options--).
 
-if you set`cookie.maxAge` to `null`, meaning no "expires" parameter is set so the cookie becomes a browser-session cookie. When the user closes the browser the cookie (and session) will be removed.
+if you set`cookie.maxage` to `null`, meaning no "expires" parameter is set so the cookie becomes a browser-session cookie. When the user closes the browser the cookie (and session) will be removed.
 
-Notice that `ttl` is different from `cookie.maxAge`, `ttl` set the expire time of sessionStore. So if you set `cookie.maxage = null`, and `ttl=ms('1d')`, the session will expired after one day, but the cookie will destory when the user cloese the browser.
+Notice that `ttl` is different from `cookie.maxage`, `ttl` set the expire time of sessionStore. So if you set `cookie.maxage = null`, and `ttl=ms('1d')`, the session will expired after one day, but the cookie will destory when the user cloese the browser.
 And mostly you can just ignore `options.ttl`, `koa-generic-session` will parse `cookie.maxage` as the tll.
 
 ## Session Store
