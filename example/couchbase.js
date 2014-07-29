@@ -14,7 +14,7 @@ var couchbase = new couchbaseClient(
 var app = koa();
 app.keys = ['keys', 'keykeys'];
 app.use(session({
-  store: new sessionStore(couchbase)
+  store: new couchbaseStore(couchbase)
 }));
 
 app.use(function *() {
