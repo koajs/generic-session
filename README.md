@@ -104,6 +104,10 @@ And use these events to report the store's status.
 
 You can use [koa-redis](https://github.com/koajs/koa-redis) to store your session data with redis.
 
+## ChangeLog
+
+1. support couchbase
+
 ## Licences
 (The MIT License)
 
