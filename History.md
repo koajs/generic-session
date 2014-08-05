@@ -1,4 +1,10 @@
 
+1.1.3 / 2014-08-05
+==================
+
+  * Merge pull request #23 from mekwall/patch-1
+  * Fixes MemoryStore not being exported
+
 1.1.2 / 2014-07-07
 ==================
 
