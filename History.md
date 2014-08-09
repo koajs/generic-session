@@ -1,4 +1,11 @@
 
+1.2.0 / 2014-08-09 
+==================
+
+  * Merge pull request #25 from mekwall/patch-2
+  * Added description for allowEmpty option
+  * Added option to allow generation of empty session
+
 1.1.3 / 2014-08-05
 ==================
 
