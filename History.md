@@ -1,5 +1,10 @@
 
-1.2.0 / 2014-08-09 
+1.2.1 / 2014-08-11
+==================
+
+  * use parseurl get the original url pathname
+
+1.2.0 / 2014-08-09
 ==================
 
   * Merge pull request #25 from mekwall/patch-2
