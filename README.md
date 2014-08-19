@@ -1,13 +1,31 @@
-generic-session [![Build Status](https://secure.travis-ci.org/koajs/generic-session.svg)](http://travis-ci.org/koajs/generic-session)
+generic-session
 =========
+
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![David deps][david-image]][david-url]
+[![node version][node-image]][node-url]
+[![npm download][download-image]][download-url]
+[![Gittip][gittip-image]][gittip-url]
+
+[npm-image]: https://img.shields.io/npm/v/koa-generic-session.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/koa-generic-session
+[travis-image]: https://img.shields.io/travis/koajs/generic-session.svg?style=flat-square
+[travis-url]: https://travis-ci.org/koajs/generic-session
+[david-image]: https://img.shields.io/david/koajs/generic-session.svg?style=flat-square
+[david-url]: https://david-dm.org/koajs/generic-session
+[node-image]: https://img.shields.io/badge/node.js-%3E=_0.11-red.svg?style=flat-square
+[node-url]: http://nodejs.org/download/
+[download-image]: https://img.shields.io/npm/dm/koa-generic-session.svg?style=flat-square
+[download-url]: https://npmjs.org/package/koa-generic-session
+[gittip-image]: https://img.shields.io/gittip/dead-horse.svg?style=flat-square
+[gittip-url]: https://www.gittip.com/dead-horse/
 
 Generic session middleware fro koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis) or [mongo](https://github.com/freakycue/koa-generic-session-mongo), supports defer session getter. different from [koa-session](https://github.com/koajs/session)(it is cookie session).
 
 This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the is session modified), it will reset the cookie and session.
 
 You can use the rolling sessions that will reset the cookie and session for every request which touch the session.
-
-[![NPM](https://nodei.co/npm/koa-sess.png?downloads=true)](https://nodei.co/npm/koa-sess/)
 
 ## Usage
 
