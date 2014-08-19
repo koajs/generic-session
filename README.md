@@ -1,7 +1,7 @@
 generic-session [![Build Status](https://secure.travis-ci.org/koajs/generic-session.svg)](http://travis-ci.org/koajs/generic-session)
 =========
 
-Generic session middleware fro koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis), supports defer session getter. different from [koa-session](https://github.com/koajs/session)(it is cookie session).
+Generic session middleware fro koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis) or [mongo](https://github.com/freakycue/koa-generic-session-mongo), supports defer session getter. different from [koa-session](https://github.com/koajs/session)(it is cookie session).
 
 This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the is session modified), it will reset the cookie and session.
 
