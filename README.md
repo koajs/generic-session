@@ -123,6 +123,9 @@ And use these events to report the store's status.
 
 You can use [koa-redis](https://github.com/koajs/koa-redis) to store your session data with redis.
 
+You can use [koa-mysql-session](https://github.com/tb01923/koa-mysql-session) to store your session data with MySQL.
+
+
 ## Licences
 (The MIT License)
 
