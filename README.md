@@ -3,6 +3,7 @@ generic-session
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
+[![Coveralls][coveralls-image]][coveralls-url]
 [![David deps][david-image]][david-url]
 [![node version][node-image]][node-url]
 [![npm download][download-image]][download-url]
@@ -12,6 +13,8 @@ generic-session
 [npm-url]: https://npmjs.org/package/koa-generic-session
 [travis-image]: https://img.shields.io/travis/koajs/generic-session.svg?style=flat-square
 [travis-url]: https://travis-ci.org/koajs/generic-session
+[coveralls-image]: https://img.shields.io/coveralls/koajs/generic-session.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/koajs/generic-session?branch=master
 [david-image]: https://img.shields.io/david/koajs/generic-session.svg?style=flat-square
 [david-url]: https://david-dm.org/koajs/generic-session
 [node-image]: https://img.shields.io/badge/node.js-%3E=_0.11-red.svg?style=flat-square
@@ -121,9 +124,11 @@ And use these events to report the store's status.
 * `connect`
 * `disconnect`
 
-You can use [koa-redis](https://github.com/koajs/koa-redis) to store your session data with redis.
+### Stores Presented
 
-You can use [koa-mysql-session](https://github.com/tb01923/koa-mysql-session) to store your session data with MySQL.
+- [koa-redis](https://github.com/koajs/koa-redis) to store your session data with redis.
+- [koa-mysql-session](https://github.com/tb01923/koa-mysql-session) to store your session data with MySQL.
+- [koa-generic-session-mongo](https://github.com/freakycue/koa-generic-session-mongo) to store your session data with MongoDB.
 
 
 ## Licences
