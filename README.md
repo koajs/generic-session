@@ -36,14 +36,14 @@ You can use the rolling sessions that will reset the cookie and session for ever
 
 ```js
 
-var koa = require('koa');
 var session = require('koa-generic-session');
-var RedisStore = require('koa-redis');
+var redisStore = require('koa-redis');
+var koa = require('koa');
 
 var app = koa();
 app.keys = ['keys', 'keykeys'];
 app.use(session({
-  store: new RedisStore()
+  store: redisStore()
 }));
 
 app.use(function *() {
