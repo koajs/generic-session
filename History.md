@@ -1,4 +1,10 @@
 
+1.2.3 / 2014-11-17
+==================
+
+  * Delete session-id cookie if session not loaded.
+  * export the session store object
+
 1.2.2 / 2014-09-16
 ==================
 
