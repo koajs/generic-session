@@ -74,20 +74,20 @@ describe('test/store.test.js', function () {
       .expect(500, done);
     });
 
-    it('should ignore session error when store.set error', function (done) {
-      mm(commonApp.store, 'set', function *() {
-        throw new Error('mock set error');
-      });
+    it('should handler session error when store.set error', function (done) {
       request(commonApp)
       .get('/session/get')
       .set('cookie', cookie)
       .expect(200)
       .expect(/2/, function () {
+        mm(commonApp.store, 'set', function *() {
+          throw new Error('mock set error');
+        });
         request(commonApp)
-        .get('/session/nothing')
+        .get('/session/get')
         .set('cookie', cookie)
-        .expect(200)
-        .expect(/1/, done);
+        .expect(500)
+        .expect(/Internal Server Error/, done);
       });
     });
   });
@@ -141,20 +141,20 @@ describe('test/store.test.js', function () {
       .expect(200, done);
     });
 
-    it('should ignore session error when store.set error', function (done) {
-      mm(deferApp.store, 'set', function *() {
-        throw new Error('mock set error');
-      });
-      request(deferApp)
+    it('should handler session error when store.set error', function (done) {
+      request(commonApp)
       .get('/session/get')
       .set('cookie', cookie)
       .expect(200)
       .expect(/2/, function () {
-        request(deferApp)
-        .get('/session/nothing')
+        mm(commonApp.store, 'set', function *() {
+          throw new Error('mock set error');
+        });
+        request(commonApp)
+        .get('/session/get')
         .set('cookie', cookie)
-        .expect(200)
-        .expect(/1/, done);
+        .expect(500)
+        .expect(/Internal Server Error/, done);
       });
     });
   });
