@@ -1,4 +1,9 @@
 
+1.3.0 / 2014-11-22
+==================
+
+  * support options.errorHanlder, default throw set error
+
 1.2.3 / 2014-11-17
 ==================
 
