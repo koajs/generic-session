@@ -1,4 +1,10 @@
 
+1.4.0 / 2015-01-06
+==================
+
+  * fix(sessionId): ensure session id generate before yield next
+  * fix indent
+
 1.3.0 / 2014-11-22
 ==================
 
