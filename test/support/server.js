@@ -14,6 +14,7 @@
  */
 var koa = require('koa');
 var http = require('http');
+var uid = require('uid-safe').sync;
 var session = require('../../');
 var Store = require('./store');
 
@@ -33,7 +34,10 @@ app.use(session({
     maxAge: 86400,
     path: '/session'
   },
-  store: store
+  store: store,
+  genSid: function(len) {
+    return uid(len) + this.request.query.test_sid_append;
+  }
 }));
 
 // will ignore repeat session
@@ -42,11 +46,14 @@ app.use(session({
   cookie: {
     maxAge: 86400,
     path: '/session'
+  },
+  genSid: function(len) {
+    return uid(len) + this.request.query.test_sid_append;
   }
 }));
 
 app.use(function *controllers() {
-  switch (this.request.url) {
+  switch (this.request.path) {
   case '/favicon.ico':
     this.staus = 404;
     break;
@@ -71,6 +78,9 @@ app.use(function *controllers() {
     break;
   case '/session/httponly':
     switchHttpOnly(this);
+    break;
+  case '/session/id':
+    getId(this);
     break;
   default:
     other(this);
@@ -100,6 +110,10 @@ function switchHttpOnly(ctx) {
 
 function other(ctx) {
   ctx.body = ctx.session !== undefined ? 'has session' : 'no session';
+}
+
+function getId(ctx) {
+  ctx.body = ctx.sessionId;
 }
 
 var app = module.exports = http.createServer(app.callback());

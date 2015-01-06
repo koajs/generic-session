@@ -159,5 +159,11 @@ describe('test/koa-session.test.js', function () {
       .get('/session/rewrite')
       .expect({foo: 'bar'}, done);
     });
+
+    it('should GET /session ok', function (done) {
+      request(app)
+        .get('/session/id?test_sid_append=test')
+        .expect(/test$/, done);
+    });
   });
 });
