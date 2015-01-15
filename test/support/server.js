@@ -26,6 +26,14 @@ app.keys = ['keys', 'keykeys'];
 app.proxy = true; // to support `X-Forwarded-*` header
 
 var store = new Store();
+
+app.use(function*(next) {
+  if (this.request.query.force_session_id) {
+    this.sessionId = this.request.query.force_session_id;
+  }
+  return yield next;
+});
+
 app.use(session({
   key: 'koss:test_sid',
   prefix: 'koss:test',
