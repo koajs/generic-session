@@ -165,5 +165,18 @@ describe('test/koa-session.test.js', function () {
         .get('/session/id?test_sid_append=test')
         .expect(/test$/, done);
     });
+
+    it('should force a session id ok', function (done) {
+      request(app)
+        .get('/session/get')
+        .expect(/.*/, function(err, res) {
+          should.not.exist(err);
+          cookie = res.headers['set-cookie'][0].split(';');
+          var val = cookie[0].split('=').pop();
+          request(app)
+            .get('/session/id?force_session_id=' + val)
+            .expect(new RegExp(val), done);
+        });
+    });
   });
 });
