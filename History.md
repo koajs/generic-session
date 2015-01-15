@@ -1,4 +1,10 @@
 
+1.5.0 / 2015-01-07 
+==================
+
+  * Merge pull request #37 from rfink/session_id_context
+  * Bind genSid to context, add tests
+
 1.4.0 / 2015-01-06
 ==================
 
