@@ -1,4 +1,10 @@
 
+1.6.0 / 2015-01-16 
+==================
+
+  * Merge pull request #39 from rfink/sess_id_optional_check
+  * Allow a forced session id that is not available in the cookie
+
 1.5.0 / 2015-01-07 
 ==================
 
