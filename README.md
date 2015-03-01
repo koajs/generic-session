@@ -54,6 +54,9 @@ app.use(function *() {
   case '/remove':
     remove.call(this);
     break;
+  case '/regenerate':
+    yield regenerate.call(this);
+    break;
   }
 });
 
@@ -69,12 +72,19 @@ function remove() {
   this.body = 0;
 }
 
+function *regenerate() {
+  get.call(this);
+  yield this.regenerateSession();
+  get.call(this);
+}
+
 app.listen(8080);
 ```
 
 * After adding session middleware, you can use `this.session` to set or get the sessions.
 * Setting `this.session = null;` will destroy this session.
 * Altering `this.session.cookie` changes the cookie options of this user. Also you can use the cookie options in session the store. Use for example `cookie.maxage` as the session store's ttl.
+* Calling `this.regenerateSession` will destroy any existing session and generate a new, empty one in its place. The new session will have a different ID.
 
 ### Options
 
