@@ -148,5 +148,27 @@ describe('test/defer.test.js', function () {
       .get('/session/rewrite')
       .expect({foo: 'bar'}, done);
     });
+
+    it('should regenerate existing sessions', function (done) {
+      var agent = request.agent(app)
+      agent
+      .get('/session/get')
+      .expect(/.+/, function(err, res) {
+        var firstId = res.body;
+        agent
+        .get('/session/regenerate')
+        .expect(/.+/, function(err, res) {
+          var secondId = res.body;
+          secondId.should.not.equal(firstId);
+          done();
+        });
+      });
+    });
+
+    it('should regenerate new sessions', function (done) {
+      request(app)
+      .get('/session/regenerateWithData')
+      .expect({ /* foo: undefined, */ hasSession: true }, done);
+    });
   });
 });

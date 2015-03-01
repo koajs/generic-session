@@ -72,6 +72,15 @@ app.use(function *controllers() {
   case '/session/httponly':
     yield switchHttpOnly(this);
     break;
+  case '/session/regenerate':
+    yield regenerate(this);
+    break;
+  case '/session/regenerateWithData':
+    var session = yield this.session;
+    session.foo = 'bar';
+    session = yield regenerate(this);
+    this.body = { foo : session.foo, hasSession: session !== undefined };
+    break;
   default:
     yield other(this);
   }
@@ -107,6 +116,13 @@ function *switchHttpOnly(ctx) {
 
 function *other(ctx) {
   ctx.body = ctx.session ? 'has session' : 'no session';
+}
+
+function *regenerate(ctx) {
+  var session = yield ctx.regenerateSession();
+  session.data = 'foo';
+  ctx.body = ctx.sessionId;
+  return session;
 }
 
 // app.listen(7001)
