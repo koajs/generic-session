@@ -63,7 +63,7 @@ app.use(session({
 app.use(function *controllers() {
   switch (this.request.path) {
   case '/favicon.ico':
-    this.staus = 404;
+    this.status = 404;
     break;
   case '/wrongpath':
     this.body = !this.session ? 'no session' : 'has session';
@@ -89,6 +89,14 @@ app.use(function *controllers() {
     break;
   case '/session/id':
     getId(this);
+    break;
+  case '/session/regenerate':
+    yield regenerate(this);
+    break;
+  case '/session/regenerateWithData':
+    this.session.foo = 'bar';
+    yield regenerate(this);
+    this.body = { foo: this.session.foo, hasSession: this.session !== undefined };
     break;
   default:
     other(this);
@@ -122,6 +130,12 @@ function other(ctx) {
 
 function getId(ctx) {
   ctx.body = ctx.sessionId;
+}
+
+function *regenerate(ctx) {
+  yield ctx.regenerateSession();
+  ctx.session.data = 'foo';
+  getId(ctx);
 }
 
 var app = module.exports = http.createServer(app.callback());
