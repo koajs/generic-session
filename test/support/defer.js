@@ -32,7 +32,8 @@ app.use(session({
     path: '/session',
   },
   defer: true,
-  store: store
+  store: store,
+  reconnectTimeout: 100
 }));
 
 // will ignore repeat session
@@ -42,7 +43,8 @@ app.use(session({
     maxAge: 86400,
     path: '/session'
   },
-  defer: true
+  defer: true,
+  reconnectTimeout: 100
 }));
 
 app.use(function *controllers() {
