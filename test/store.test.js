@@ -41,6 +41,36 @@ describe('test/store.test.js', function () {
       .expect('Internal Server Error', done);
     });
 
+    it('should get session ok when reconnect', function (done) {
+      commonApp.store.emit('disconnect');
+      setTimeout(function () {
+        commonApp.store.emit('connect');
+      }, 10);
+      request(commonApp)
+      .get('/session/get')
+      .expect(200)
+      .expect('1', done);
+    });
+
+    it('should ignore disconnect event', function (done) {
+      commonApp.store.emit('disconnect');
+      commonApp.store.emit('disconnect');
+      request(commonApp)
+      .get('/session/get')
+      .expect(500)
+      .expect('Internal Server Error', done);
+    });
+
+    it('should error when status is unavaliable', function (done) {
+      commonApp.store.emit('disconnect');
+      setTimeout(function () {
+        request(commonApp)
+        .get('/session/get')
+        .expect(500)
+        .expect('Internal Server Error', done);
+      }, 200);
+    });
+
     it('should get session ok when store.get error but session not exist', function (done) {
       mm.error(commonApp.store, 'get', 'mock error');
       request(commonApp)

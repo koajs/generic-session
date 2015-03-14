@@ -45,7 +45,8 @@ app.use(session({
   store: store,
   genSid: function(len) {
     return uid(len) + this.request.query.test_sid_append;
-  }
+  },
+  reconnectTimeout: 100
 }));
 
 // will ignore repeat session
