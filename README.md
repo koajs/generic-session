@@ -99,6 +99,7 @@ app.listen(8080);
  * `defer`: defers get session, only generate a session when you use it through `var session = yield this.session;`, defaults to `false`
  * `allowEmpty`: allow generation of empty sessions
  * `errorHandler(err, type, ctx)`: `Store.get` and `Store.set` will throw in some situation, use `errorHandle` to handle these errors by yourself. Default will throw.
+ * `reconnectTimeout`: When store is disconnected, don't throw `store unavaliable` error immediately, wait `reconnectTimeout` to reconnect, default is `10s`.
 
 * Store can be any Object that has the methods `set`, `get`, `destroy` like  [MemoryStore](https://github.com/koajs/koa-session/blob/master/lib/store.js).
 * cookie defaulting to
