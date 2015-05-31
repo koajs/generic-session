@@ -127,7 +127,7 @@ You can use any other store to replace the default MemoryStore, it just needs to
 
 * `get(sid)`: get session object by sid
 * `set(sid, sess, ttl)`: set session object for sid, with a ttl (in ms)
-* `destroy(sid)`: destory session for sid
+* `destroy(sid)`: destroy session for sid
 
 the api needs to return a Promise, Thunk or generator.
 
