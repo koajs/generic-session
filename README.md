@@ -99,7 +99,7 @@ app.listen(8080);
  * `defer`: defers get session, only generate a session when you use it through `var session = yield this.session;`, defaults to `false`
  * `allowEmpty`: allow generation of empty sessions
  * `errorHandler(err, type, ctx)`: `Store.get` and `Store.set` will throw in some situation, use `errorHandle` to handle these errors by yourself. Default will throw.
- * `reconnectTimeout`: When store is disconnected, don't throw `store unavaliable` error immediately, wait `reconnectTimeout` to reconnect, default is `10s`.
+ * `reconnectTimeout`: When store is disconnected, don't throw `store unavailable` error immediately, wait `reconnectTimeout` to reconnect, default is `10s`.
 
 * Store can be any Object that has the methods `set`, `get`, `destroy` like  [MemoryStore](https://github.com/koajs/koa-session/blob/master/lib/store.js).
 * cookie defaulting to
@@ -118,7 +118,7 @@ For a full list of cookie options see [expressjs/cookies](https://github.com/exp
 
 if you set`cookie.maxage` to `null`, meaning no "expires" parameter is set so the cookie becomes a browser-session cookie. When the user closes the browser the cookie (and session) will be removed.
 
-Notice that `ttl` is different from `cookie.maxage`, `ttl` set the expire time of sessionStore. So if you set `cookie.maxage = null`, and `ttl=ms('1d')`, the session will expired after one day, but the cookie will destory when the user cloese the browser.
+Notice that `ttl` is different from `cookie.maxage`, `ttl` set the expire time of sessionStore. So if you set `cookie.maxage = null`, and `ttl=ms('1d')`, the session will expired after one day, but the cookie will destroy when the user closes the browser.
 And mostly you can just ignore `options.ttl`, `koa-generic-session` will parse `cookie.maxage` as the tll.
 
 ## Session Store
@@ -127,7 +127,7 @@ You can use any other store to replace the default MemoryStore, it just needs to
 
 * `get(sid)`: get session object by sid
 * `set(sid, sess, ttl)`: set session object for sid, with a ttl (in ms)
-* `destroy(sid)`: destory session for sid
+* `destroy(sid)`: destroy session for sid
 
 the api needs to return a Promise, Thunk or generator.
 
