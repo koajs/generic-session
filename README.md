@@ -100,6 +100,7 @@ app.listen(8080);
  * `allowEmpty`: allow generation of empty sessions
  * `errorHandler(err, type, ctx)`: `Store.get` and `Store.set` will throw in some situation, use `errorHandle` to handle these errors by yourself. Default will throw.
  * `reconnectTimeout`: When store is disconnected, don't throw `store unavailable` error immediately, wait `reconnectTimeout` to reconnect, default is `10s`.
+ * `sessionIdStore`: object with get, set, reset methods for passing session id throw requests.
 
 * Store can be any Object that has the methods `set`, `get`, `destroy` like  [MemoryStore](https://github.com/koajs/koa-session/blob/master/lib/store.js).
 * cookie defaulting to
