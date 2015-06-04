@@ -1,4 +1,9 @@
 
+1.9.0 / 2015-06-05
+==================
+
+  * Added session id storage option to override session id store logic.
+
 1.8.0 / 2015-03-15
 ==================
 
