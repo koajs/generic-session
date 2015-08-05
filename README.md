@@ -143,6 +143,7 @@ And use these events to report the store's status.
 - [koa-mysql-session](https://github.com/tb01923/koa-mysql-session) to store your session data with MySQL.
 - [koa-generic-session-mongo](https://github.com/freakycue/koa-generic-session-mongo) to store your session data with MongoDB.
 - [koa-pg-session](https://github.com/TMiguelT/koa-pg-session) to store your session data with PostgreSQL.
+- [koa-generic-session-rethinkdb](https://github.com/KualiCo/koa-generic-session-rethinkdb) to store your session data with ReThinkDB.
 
 
 ## Licences
