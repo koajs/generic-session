@@ -61,7 +61,7 @@ describe('test/store.test.js', function () {
       .expect('Internal Server Error', done);
     });
 
-    it('should error when status is unavaliable', function (done) {
+    it('should error when status is unavailable', function (done) {
       commonApp.store.emit('disconnect');
       setTimeout(function () {
         request(commonApp)
