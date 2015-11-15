@@ -24,6 +24,13 @@ var EventEmitter = require('events').EventEmitter;
 describe('test/koa-session.test.js', function () {
   describe('init', function () {
     afterEach(mm.restore);
+
+    beforeEach(function (done) {
+      request(app)
+        .get('/session/remive')
+        .expect(200, done);
+    });
+
     it('should warn when in production', function (done) {
       mm(process.env, 'NODE_ENV', 'production');
       mm(console, 'warn', function (message) {
@@ -157,7 +164,23 @@ describe('test/koa-session.test.js', function () {
     it('should rewrite session before get ok', function (done) {
       request(app)
       .get('/session/rewrite')
-      .expect({foo: 'bar'}, done);
+      .expect({foo: 'bar', path: '/session/rewrite'}, done);
+    });
+
+    it('should regenerate a new session when session invalid', function (done) {
+      request(app)
+        .get('/session/get')
+        .expect('1', function (err) {
+          should.not.exist(err);
+          request(app)
+            .get('/session/nothing?valid=false')
+            .expect('', function (err) {
+              should.not.exist(err);
+              request(app)
+                .get('/session/get')
+                .expect('1', done);
+            });
+        });
     });
 
     it('should GET /session ok', function (done) {
@@ -195,7 +218,7 @@ describe('test/koa-session.test.js', function () {
         });
     });
 
-    it('should regenerate new sessions', function (done) {
+    it('should regenerate a new session', function (done) {
       request(app)
         .get('/session/regenerateWithData')
         .expect({ /* foo: undefined, */ hasSession: true }, done);
