@@ -38,7 +38,7 @@ test-travis:
 		$(TESTS)
 
 autod:
-	@./node_modules/.bin/autod -w -e example --prefix=~ --keep=supertest,debug
+	@./node_modules/.bin/autod -w -e example --prefix=~ --keep=supertest,debug, --semver=koa@1
 	@$(MAKE) install
 
 .PHONY: test
