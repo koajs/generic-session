@@ -46,6 +46,12 @@ app.use(session({
   genSid: function(len) {
     return uid(len) + this.request.query.test_sid_append;
   },
+  beforeSave: function (ctx, session) {
+    session.path = ctx.path;
+  },
+  valid: function (ctx, session) {
+    return ctx.query.valid !== 'false';
+  },
   reconnectTimeout: 100
 }));
 

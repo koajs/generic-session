@@ -101,6 +101,8 @@ app.listen(8080);
  * `errorHandler(err, type, ctx)`: `Store.get` and `Store.set` will throw in some situation, use `errorHandle` to handle these errors by yourself. Default will throw.
  * `reconnectTimeout`: When store is disconnected, don't throw `store unavailable` error immediately, wait `reconnectTimeout` to reconnect, default is `10s`.
  * `sessionIdStore`: object with get, set, reset methods for passing session id throw requests.
+ * `valid`: valid(ctx, session), valid session value before use it
+ * `beforeSave`: beforeSave(ctx, session), hook before save session
 
 * Store can be any Object that has the methods `set`, `get`, `destroy` like  [MemoryStore](https://github.com/koajs/koa-session/blob/master/lib/store.js).
 * cookie defaulting to
@@ -121,6 +123,11 @@ if you set`cookie.maxage` to `null`, meaning no "expires" parameter is set so th
 
 Notice that `ttl` is different from `cookie.maxage`, `ttl` set the expire time of sessionStore. So if you set `cookie.maxage = null`, and `ttl=ms('1d')`, the session will expired after one day, but the cookie will destroy when the user closes the browser.
 And mostly you can just ignore `options.ttl`, `koa-generic-session` will parse `cookie.maxage` as the tll.
+
+## Hooks
+
+- `valid()`: valid session value before use it
+- `beforeSave()`: hook before save session
 
 ## Session Store
 
