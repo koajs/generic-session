@@ -26,7 +26,7 @@ generic-session
 
 Generic session middleware for koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis) or [mongo](https://github.com/freakycue/koa-generic-session-mongo), supports defer session getter. different from [koa-session](https://github.com/koajs/session)(it is cookie session).
 
-This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the is session modified), it will reset the cookie and session.
+This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the session is modified), it will reset the cookie and session.
 
 You can use the rolling sessions that will reset the cookie and session for every request which touch the session.
 
