@@ -32,7 +32,6 @@ You can use the rolling sessions that will reset the cookie and session for ever
 ### Example
 
 ```js
-
 var session = require('koa-generic-session');
 var redisStore = require('koa-redis');
 var koa = require('koa');

@@ -10,8 +10,8 @@
   ],
   "author": "dead_horse <dead_horse@qq.com>",
   "scripts": {
-    "test": "mocha --harmony -R spec -r should test/*.test.js",
-    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -r should test/*.test.js"
+    "test": "mocha --harmony -R spec -r should -t 3000 test/*.test.js",
+    "test-cov": "node --harmony node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- -r should -t 3000 test/*.test.js"
   },
   "dependencies": {
     "copy-to": "~2.0.1",
