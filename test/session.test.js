@@ -21,7 +21,7 @@ var mm = require('mm');
 var should = require('should');
 var EventEmitter = require('events').EventEmitter;
 
-describe('test/koa-session.test.js', function () {
+describe('test/session.test.js', function () {
   describe('init', function () {
     afterEach(mm.restore);
 
