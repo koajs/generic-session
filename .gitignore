@@ -15,4 +15,4 @@ npm-debug.log
 node_modules
 coverage.html
 dump.rdb
-lib
+lib/
