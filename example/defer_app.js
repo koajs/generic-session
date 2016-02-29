@@ -10,27 +10,27 @@ app.use(session({
   store: new RedisStore()
 }));
 
-app.use(function *() {
+app.use(async (ctx) => {
   switch (this.path) {
   case '/get':
-    yield get.call(this);
+    await get(ctx);
     break;
   case '/remove':
-    remove.call(this);
+    remove(ctx);
     break;
   }
 });
 
-function* get() {
-  var session = yield this.session;
+async function get(ctx) {
+  var session = yield ctx.session;
   session.count = session.count || 0;
   session.count++;
-  this.body = session.count;
+  ctx.body = session.count;
 }
 
-function remove() {
-  this.session = null;
-  this.body = 0;
+function remove(ctx) {
+  ctx.session = null;
+  ctx.body = 0;
 }
 
 app.listen(8080);
