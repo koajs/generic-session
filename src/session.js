@@ -1,25 +1,26 @@
 /**!
  * koa-generic-session - lib/session.js
- * Copyright(c) 2013 - 2014
+ * Copyright(c) 2013 - 2016
  * MIT Licensed
  *
  * Authors:
  *   dead_horse <dead_horse@qq.com> (http://deadhorse.me)
+ *   Marcus Ekwall <marcus.ekwall@gmail.com> (https://github.com/mekwall)
  */
-
-'use strict';
 
 /**
  * Module dependencies.
  */
 
-const debug = require('debug')('koa-generic-session:session');
-const MemoryStore = require('./memory_store');
-const crc32 = require('crc').crc32;
-const parse = require('parseurl');
-const Store = require('./store');
-const copy = require('copy-to');
-const uid = require('uid-safe');
+import MemoryStore from './memory_store';
+import {crc32} from 'crc';
+import parse from 'parseurl';
+import Store from './store';
+import copy from 'copy-to';
+import uid from 'uid-safe';
+import D from 'debug';
+
+const debug = D('koa-generic-session:session');
 
 /**
  * Warning message for `MemoryStore` usage in production.
@@ -48,7 +49,7 @@ const defaultCookie = {
  *     {path: '/', httpOnly: true, maxAge: null, rewrite: true, signed: true}
  *   - [`defer`] defer get session,
  *   - [`rolling`]  rolling session, always reset the cookie and sessions, default is false
- *     you should `yield this.session` to get the session if defer is true, default is false
+ *     you should `await ctx.session` to get the session if defer is true, default is false
  *   - [`genSid`] you can use your own generator for sid
  *   - [`errorHanlder`] handler for session store get or set error
  *   - [`valid`] valid(ctx, session), valid session value before use it
@@ -56,7 +57,7 @@ const defaultCookie = {
  *   - [`sessionIdStore`] object with get, set, reset methods for passing session id throw requests.
  */
 
-module.exports = function (options) {
+export default function (options) {
   options = options || {};
   let key = options.key || 'koa.sid';
   let client = options.store || new MemoryStore();
@@ -153,48 +154,48 @@ module.exports = function (options) {
    *   save sessionId into context
    *   get session from store
    */
-  function *getSession() {
-    if (!matchPath(this)) return;
+  async function getSession(ctx) {
+    if (!matchPath(ctx)) return;
     if (storeStatus === 'pending') {
       debug('store is disconnect and pending');
-      yield waitStore;
+      await waitStore;
     } else if (storeStatus === 'unavailable') {
       debug('store is unavailable');
       throw new Error('session store is unavailable');
     }
 
-    if (!this.sessionId) {
-      this.sessionId = sessionIdStore.get.call(this);
+    if (!ctx.sessionId) {
+      ctx.sessionId = sessionIdStore.get.call(ctx);
     }
 
     let session;
     let isNew = false;
-    if (!this.sessionId) {
+    if (!ctx.sessionId) {
       debug('session id not exist, generate a new one');
       session = generateSession();
-      this.sessionId = genSid.call(this, 24);
+      ctx.sessionId = genSid.call(ctx, 24);
       isNew = true;
     } else {
       try {
-        session = yield store.get(this.sessionId);
-        debug('get session %j with key %s', session, this.sessionId);
+        session = await store.get(ctx.sessionId);
+        debug('get session %j with key %s', session, ctx.sessionId);
       } catch (err) {
         if (err.code === 'ENOENT') {
           debug('get session error, code = ENOENT');
         } else {
           debug('get session error: ', err.message);
-          errorHandler(err, 'get', this);
+          errorHandler(err, 'get', ctx);
         }
       }
     }
 
     // make sure the session is still valid
     if (!session ||
-      !valid(this, session)) {
+      !valid(ctx, session)) {
       debug('session is empty or invalid');
       session = generateSession();
-      this.sessionId = genSid.call(this, 24);
-      sessionIdStore.reset.call(this);
+      ctx.sessionId = genSid.call(ctx, 24);
+      sessionIdStore.reset.call(ctx);
       isNew = true;
     }
 
@@ -213,13 +214,13 @@ module.exports = function (options) {
    *   if session === null; delete it from store
    *   if session is modified, update cookie and store
    */
-  function *refreshSession (session, originalHash, isNew) {
+  async function refreshSession(ctx, session, originalHash, isNew) {
     //delete session
     if (!session) {
       if (!isNew) {
-        debug('session set to null, destroy session: %s', this.sessionId);
-        sessionIdStore.reset.call(this);
-        return yield store.destroy(this.sessionId);
+        debug('session set to null, destroy session: %s', ctx.sessionId);
+        sessionIdStore.reset.call(ctx);
+        return await store.destroy(ctx.sessionId);
       }
       return debug('a new session and set to null, ignore destroy');
     }
@@ -239,16 +240,16 @@ module.exports = function (options) {
     compatMaxage(session.cookie);
 
     // custom before save hook
-    beforeSave(this, session);
+    beforeSave(ctx, session);
 
     //update session
     try {
-      yield store.set(this.sessionId, session);
-      sessionIdStore.set.call(this, this.sessionId, session);
+      await store.set(ctx.sessionId, session);
+      sessionIdStore.set.call(ctx, ctx.sessionId, session);
       debug('saved');
     } catch (err) {
       debug('set session error: ', err.message);
-      errorHandler(err, 'set', this);
+      errorHandler(err, 'set', ctx);
     }
   }
 
@@ -257,48 +258,48 @@ module.exports = function (options) {
    * each request will generate a new session
    *
    * ```
-   * let session = this.session;
+   * let session = ctx.session;
    * ```
    */
-  function *session(next) {
-    this.sessionStore = store;
-    if (this._session) {
-      return yield next;
+  async function session(ctx, next) {
+    ctx.sessionStore = store;
+    if (ctx._session) {
+      return await next;
     }
-    let result = yield getSession.call(this);
+    let result = await getSession(ctx);
     if (!result) {
-      return yield next;
+      return await next;
     }
 
-    this._session = result.session;
+    ctx._session = result.session;
 
     // more flexible
-    this.__defineGetter__('session', function () {
-      return this._session;
+    ctx.__defineGetter__('session', function () {
+      return ctx._session;
     });
 
-    this.__defineSetter__('session', function (sess) {
-      this._session = sess;
+    ctx.__defineSetter__('session', function (sess) {
+      ctx._session = sess;
     });
 
-    this.regenerateSession = function *regenerateSession() {
+    ctx.regenerateSession = async function regenerateSession() {
       debug('regenerating session');
       if (!result.isNew) {
         // destroy the old session
         debug('destroying previous session');
-        yield store.destroy(this.sessionId);
+        await store.destroy(ctx.sessionId);
       }
 
-      this.session = generateSession();
-      this.sessionId = genSid.call(this, 24);
-      sessionIdStore.reset.call(this);
+      ctx.session = generateSession();
+      ctx.sessionId = genSid.call(ctx, 24);
+      sessionIdStore.reset.call(ctx);
 
-      debug('created new session: %s', this.sessionId);
+      debug('created new session: %s', ctx.sessionId);
       result.isNew = true;
     }
 
-    yield next;
-    yield refreshSession.call(this, this.session, result.originalHash, result.isNew);
+    await next;
+    await refreshSession(ctx, ctx.session, result.originalHash, result.isNew);
   }
 
   /**
@@ -306,14 +307,14 @@ module.exports = function (options) {
    * only generate and get session when request use session
    *
    * ```
-   * let session = yield this.session;
+   * let session = await ctx.session;
    * ```
    */
-  function *deferSession(next) {
-    this.sessionStore = store;
+  async function deferSession(ctx, next) {
+    ctx.sessionStore = store;
 
-    if (this.session) {
-      return yield next;
+    if (ctx.session) {
+      return await next;
     }
     let isNew = false;
     let originalHash = null;
@@ -321,61 +322,61 @@ module.exports = function (options) {
     let getter = false;
 
     // if path not match
-    if (!matchPath(this)) {
-      return yield next;
+    if (!matchPath(ctx)) {
+      return await next;
     }
 
-    this.__defineGetter__('session', function *() {
+    ctx.__defineGetter__('session', async function () {
       if (touchSession) {
-        return this._session;
+        return ctx._session;
       }
       touchSession = true;
       getter = true;
 
-      let result = yield getSession.call(this);
+      let result = await getSession(ctx);
       // if cookie path not match
       // this route's controller should never use session
       if (!result) return;
 
       originalHash = result.originalHash;
       isNew = result.isNew;
-      this._session = result.session;
-      return this._session;
+      ctx._session = result.session;
+      return ctx._session;
     });
 
-    this.__defineSetter__('session', function (value) {
+    ctx.__defineSetter__('session', function (value) {
       touchSession = true;
-      this._session = value;
+      ctx._session = value;
     });
 
-    this.regenerateSession = function *regenerateSession() {
+    ctx.regenerateSession = async function regenerateSession(ctx) {
       debug('regenerating session');
       // make sure that the session has been loaded
-      yield this.session;
+      await ctx.session;
 
       if (!isNew) {
         // destroy the old session
         debug('destroying previous session');
-        yield store.destroy(this.sessionId);
+        await store.destroy(ctx.sessionId);
       }
 
-      this._session = generateSession();
-      this.sessionId = genSid.call(this, 24);
-      sessionIdStore.reset.call(this);
-      debug('created new session: %s', this.sessionId);
+      ctx._session = generateSession();
+      ctx.sessionId = genSid.call(ctx, 24);
+      sessionIdStore.reset.call(ctx);
+      debug('created new session: %s', ctx.sessionId);
       isNew = true;
-      return this._session;
+      return ctx._session;
     }
 
-    yield next;
+    await next;
 
     if (touchSession) {
-      // if only this.session=, need try to decode and get the sessionID
+      // if only ctx.session=, need try to decode and get the sessionID
       if (!getter) {
-        this.sessionId = sessionIdStore.get.call(this);
+        ctx.sessionId = sessionIdStore.get(ctx);
       }
 
-      yield refreshSession.call(this, this._session, originalHash, isNew);
+      await refreshSession(ctx, ctx._session, originalHash, isNew);
     }
   }
 };
