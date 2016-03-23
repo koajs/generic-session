@@ -1,5 +1,10 @@
 
-1.10.1 / 2015-12-15 
+1.10.2 / 2016-03-23 
+==================
+
+  * fix: check if session exits
+
+1.10.1 / 2015-12-15
 ==================
 
   * feat: ctx.session as a setter/getter
