@@ -18,7 +18,7 @@ var request = require('supertest');
 var mm = require('mm');
 var should = require('should');
 
-describe.only('test/rolling.test.js', function () {
+describe('test/rolling.test.js', function () {
   var cookie;
   beforeEach(function (done) {
     request(app)
