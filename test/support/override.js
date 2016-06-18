@@ -58,6 +58,8 @@ app.use(function *controllers() {
     remove(this);
     break;
   }
+  
+  this.body = this.body + ', ' + this.sessionSave;
 });
 
 function read(ctx) {
