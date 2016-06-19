@@ -1,5 +1,10 @@
 
-1.10.2 / 2016-03-23 
+1.11.0 / 2016-06-20
+==================
+
+  * Add support for overriding session save conditions per request (#89)
+
+1.10.2 / 2016-03-23
 ==================
 
   * fix: check if session exits
