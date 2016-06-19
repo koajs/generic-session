@@ -48,7 +48,7 @@ describe('test/override.test.js', function () {
   it('should force saving unmodified session', req.bind(null, 'read/force', /2, true/, true));
   it('should prevent deleting session', req.bind(null, 'remove/prevent', /0, false/, false));
   it('should not have fresh session', req.bind(null, 'read', /2, null/, false));
-  it('should delete session', req.bind(null, 'remove', /0, null/, true));
+  it('should delete session on force-save', req.bind(null, 'remove/force', /0, true/, true));
   it('should have fresh session', req.bind(null, 'read', /0, null/, true));
 
 });

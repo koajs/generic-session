@@ -54,7 +54,11 @@ app.use(function *controllers() {
 
   case '/session/remove/prevent':
     this.sessionSave = false;
-  case '/session/remove':
+    remove(this);
+    break;
+    
+  case '/session/remove/force':
+    this.sessionSave = true;
     remove(this);
     break;
   }
