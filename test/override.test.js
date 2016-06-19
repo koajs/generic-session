@@ -29,7 +29,7 @@ describe('test/override.test.js', function () {
       done(err);
     });
   });
-  
+
   function req(path, expectBody, expectCookie, done) {
     request(app)
       .get('/session/' + path)
@@ -50,5 +50,5 @@ describe('test/override.test.js', function () {
   it('should not have fresh session', req.bind(null, 'read', /2, null/, false));
   it('should delete session', req.bind(null, 'remove', /0, null/, true));
   it('should have fresh session', req.bind(null, 'read', /0, null/, true));
-  
+
 });

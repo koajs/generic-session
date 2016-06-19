@@ -45,20 +45,20 @@ app.use(function *controllers() {
   case '/session/read':
     read(this);
     break;
-    
+
   case '/session/update/prevent':
     this.sessionSave = false;
   case '/session/update':
     update(this);
     break;
-    
+
   case '/session/remove/prevent':
     this.sessionSave = false;
   case '/session/remove':
     remove(this);
     break;
   }
-  
+
   this.body = this.body + ', ' + this.sessionSave;
 });
 
