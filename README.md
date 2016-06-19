@@ -28,7 +28,7 @@ Generic session middleware for koa, easy use with custom stores such as [redis](
 
 This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the session is modified), it will reset the cookie and session.
 
-You can use the rolling sessions that will reset the cookie and session for every request which touch the session.
+You can use the rolling sessions that will reset the cookie and session for every request which touch the session.  Save behavior can be overridden per request.
 
 ## Usage
 
@@ -85,6 +85,8 @@ app.listen(8080);
 * Setting `this.session = null;` will destroy this session.
 * Altering `this.session.cookie` changes the cookie options of this user. Also you can use the cookie options in session the store. Use for example `cookie.maxage` as the session store's ttl.
 * Calling `this.regenerateSession` will destroy any existing session and generate a new, empty one in its place. The new session will have a different ID.
+* Setting `this.sessionSave = true` will force saving the session regardless of any other options or conditions.
+* Setting `this.sessionSave = false` will prevent saving the session regardless of any other options or conditions.
 
 ### Options
 
