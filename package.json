@@ -22,7 +22,7 @@
     "contributors": "*",
     "istanbul-harmony": "*",
     "koa": "~1.1.2",
-    "koa-redis": "~1.0.1",
+    "koa-redis": "~2.0.1",
     "mm": "~1.3.5",
     "mocha": "2",
     "should": "~7.1.1",
