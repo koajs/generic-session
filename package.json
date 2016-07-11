@@ -3,6 +3,10 @@
   "description": "koa generic session store by memory, redis or others",
   "repository": "koajs/generic-session",
   "version": "1.11.1",
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "keywords": [
     "koa",
     "middleware",
