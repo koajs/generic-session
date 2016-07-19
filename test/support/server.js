@@ -28,6 +28,15 @@ app.proxy = true; // to support `X-Forwarded-*` header
 var store = new Store();
 
 app.use(function*(next) {
+  try {
+    yield next;
+  } catch (err) {
+    this.status = err.status || 500;
+    this.body = err.message;
+  }
+});
+
+app.use(function*(next) {
   if (this.request.query.force_session_id) {
     this.sessionId = this.request.query.force_session_id;
   }
@@ -85,6 +94,9 @@ app.use(function *controllers() {
   case '/session/get':
     get(this);
     break;
+  case '/session/get_error':
+    getError(this);
+    break;
   case '/session/nothing':
     nothing(this);
     break;
@@ -118,6 +130,12 @@ function get(ctx) {
   ctx.session.count = ctx.session.count || 0;
   ctx.session.count++;
   ctx.body = ctx.session.count;
+}
+
+function getError(ctx) {
+  ctx.session.count = ctx.session.count || 0;
+  ctx.session.count++;
+  throw new Error('oops');
 }
 
 function remove(ctx) {
