@@ -203,7 +203,7 @@ describe('test/koa-session.test.js', function () {
     });
 
     it('should regenerate existing sessions', function (done) {
-      var agent = request.agent(app)
+      var agent = request.agent(app);
       agent
         .get('/session/get')
         .expect(/.+/, function(err, res) {
@@ -222,6 +222,22 @@ describe('test/koa-session.test.js', function () {
       request(app)
         .get('/session/regenerateWithData')
         .expect({ /* foo: undefined, */ hasSession: true }, done);
+    });
+
+    it('should always refreshSession', function(done) {
+      var cookie;
+      request(app)
+      .get('/session/get_error')
+      .expect(500)
+      .end(function(err, res) {
+        should.not.exist(err);
+        cookie = res.headers['set-cookie'].join(';');
+        should.exist(cookie);
+        request(app)
+        .get('/session/get')
+        .set('cookie', cookie)
+        .expect(/2/, done);
+      });
     });
   });
 });

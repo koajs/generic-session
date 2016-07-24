@@ -38,7 +38,7 @@ describe('test/store.test.js', function () {
       request(commonApp)
       .get('/session/get')
       .expect(500)
-      .expect('Internal Server Error', done);
+      .expect('session store is unavailable', done);
     });
 
     it('should get session ok when reconnect', function (done) {
@@ -58,7 +58,7 @@ describe('test/store.test.js', function () {
       request(commonApp)
       .get('/session/get')
       .expect(500)
-      .expect('Internal Server Error', done);
+      .expect('session store is unavailable', done);
     });
 
     it('should error when status is unavailable', function (done) {
@@ -67,7 +67,7 @@ describe('test/store.test.js', function () {
         request(commonApp)
         .get('/session/get')
         .expect(500)
-        .expect('Internal Server Error', done);
+        .expect('session store is unavailable', done);
       }, 200);
     });
 
@@ -117,8 +117,18 @@ describe('test/store.test.js', function () {
         .get('/session/get')
         .set('cookie', cookie)
         .expect(500)
-        .expect(/Internal Server Error/, done);
+        .expect('mock set error', done);
       });
+    });
+
+    it('should handler session error when store.set error and logic error', function (done) {
+      mm(commonApp.store, 'set', function *() {
+        throw new Error('mock set error');
+      });
+      request(commonApp)
+      .get('/session/get_error')
+      .expect(500)
+      .expect('oops', done);
     });
   });
 
@@ -135,7 +145,7 @@ describe('test/store.test.js', function () {
       request(deferApp)
       .get('/session/get')
       .expect(500)
-      .expect('Internal Server Error', done);
+      .expect('session store is unavailable', done);
     });
 
     it('should get session ok when store.get error but session not exist', function (done) {
@@ -184,7 +194,7 @@ describe('test/store.test.js', function () {
         .get('/session/get')
         .set('cookie', cookie)
         .expect(500)
-        .expect(/Internal Server Error/, done);
+        .expect('mock set error', done);
       });
     });
   });
