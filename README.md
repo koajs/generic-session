@@ -149,7 +149,7 @@ And use these events to report the store's status.
 - [koa-pg-session](https://github.com/TMiguelT/koa-pg-session) to store your session data with PostgreSQL.
 - [koa-generic-session-rethinkdb](https://github.com/KualiCo/koa-generic-session-rethinkdb) to store your session data with ReThinkDB.
 - [koa-sqlite3-session](https://github.com/chichou/koa-sqlite3-session) to store your session data with SQLite3.
-- [koa-generic-session-sequelize](https://github.com/natesilva/koa-generic-session-sequelize) to use the [Sequelize](http://docs.sequelizejs.com/) ORM to store your session data.
+- [koa-generic-session-sequelize](https://github.com/natesilva/koa-generic-session-sequelize) to store your session data with the [Sequelize](http://docs.sequelizejs.com/) ORM.
 
 ## Licences
 (The MIT License)
