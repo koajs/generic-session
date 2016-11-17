@@ -108,7 +108,7 @@ app.listen(8080);
     {
       path: '/',
       httpOnly: true,
-      maxage: null,
+      maxage: 24 * 60 * 60 * 1000 //one day in ms,
       rewrite: true,
       signed: true
     }
