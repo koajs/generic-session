@@ -1,4 +1,12 @@
 
+1.11.4 / 2016-12-01
+==================
+
+  * docs: maxage => maxAge
+  * fix: maxage => maxAge (#107)
+  * update default cookie maxage in readme (#84)
+  * add koa-generic-session-sequelize session store (#103)
+
 1.11.3 / 2016-07-24
 ==================
 
