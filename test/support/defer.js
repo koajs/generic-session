@@ -101,7 +101,7 @@ function nosession(ctx) {
 }
 
 function *nothing(ctx) {
-  ctx.body = (yield ctx.session).count;
+  ctx.body = String((yield ctx.session).count);
 }
 
 function *get(ctx) {
@@ -109,7 +109,7 @@ function *get(ctx) {
   session = yield ctx.session;
   session.count = session.count || 0;
   session.count++;
-  ctx.body = session.count;
+  ctx.body = String(session.count);
 }
 
 function *remove(ctx) {

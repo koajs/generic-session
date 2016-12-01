@@ -129,7 +129,7 @@ function nothing(ctx) {
 function get(ctx) {
   ctx.session.count = ctx.session.count || 0;
   ctx.session.count++;
-  ctx.body = ctx.session.count;
+  ctx.body = String(ctx.session.count);
 }
 
 function getError(ctx) {
@@ -140,7 +140,7 @@ function getError(ctx) {
 
 function remove(ctx) {
   ctx.session = null;
-  ctx.body = 0;
+  ctx.body = '0';
 }
 
 function switchHttpOnly(ctx) {

@@ -56,7 +56,7 @@ app.use(function *controllers() {
     this.sessionSave = false;
     remove(this);
     break;
-    
+
   case '/session/remove/force':
     this.sessionSave = true;
     remove(this);
@@ -68,18 +68,18 @@ app.use(function *controllers() {
 
 function read(ctx) {
   ctx.session.count = ctx.session.count || 0;
-  ctx.body = ctx.session.count;
+  ctx.body = String(ctx.session.count);
 }
 
 function update(ctx) {
   ctx.session.count = ctx.session.count || 0;
   ctx.session.count++;
-  ctx.body = ctx.session.count;
+  ctx.body = String(ctx.session.count);
 }
 
 function remove(ctx) {
   ctx.session = null;
-  ctx.body = 0;
+  ctx.body = '0';
 }
 
 var app = module.exports = http.createServer(app.callback());
