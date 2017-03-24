@@ -20,7 +20,7 @@ var Store = module.exports = function () {
 
 util.inherits(Store, EventEmitter);
 
-Store.prototype.get = function *(sid) {
+Store.prototype.get = async function get(sid) {
   var session = this.sessions[sid];
   if (!session) {
     return null;
@@ -32,10 +32,10 @@ Store.prototype.get = function *(sid) {
   return r;
 };
 
-Store.prototype.set = function *(sid, val) {
+Store.prototype.set = async function set(sid, val) {
   this.sessions[sid] = val;
 };
 
-Store.prototype.destroy = function *(sid) {
+Store.prototype.destroy = async function destroy(sid) {
   delete this.sessions[sid];
 };

@@ -10,10 +10,10 @@ app.use(session({
   store: new RedisStore()
 }));
 
-app.use(function *() {
+app.use(async function() {
   switch (this.path) {
   case '/get':
-    yield get.call(this);
+    await get.call(this);
     break;
   case '/remove':
     remove.call(this);
@@ -21,8 +21,8 @@ app.use(function *() {
   }
 });
 
-function* get() {
-  var session = yield this.session;
+async function get() {
+  var session = await this.session;
   session.count = session.count || 0;
   session.count++;
   this.body = session.count;

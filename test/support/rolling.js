@@ -17,7 +17,7 @@ var http = require('http');
 var session = require('../../');
 var Store = require('./store');
 
-var app = koa();
+var app = new koa();
 
 app.name = 'koa-session-test';
 app.outputErrors = true;
@@ -38,7 +38,7 @@ app.use(session({
   rolling: true,
 }));
 
-app.use(function *controllers() {
+app.use(async function controllers() {
   switch (this.request.path) {
   case '/session/get':
     get(this);

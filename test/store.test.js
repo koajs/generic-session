@@ -85,7 +85,7 @@ describe('test/store.test.js', function () {
     });
 
     it('should get session error when store.get error', function (done) {
-      mm(commonApp.store, 'get', function *() {
+      mm(commonApp.store, 'get', async () => {
         throw new Error('mock get error');
       });
       request(commonApp)
@@ -95,7 +95,7 @@ describe('test/store.test.js', function () {
     });
 
     it('should get /session/notuse error when store.get error', function (done) {
-      mm(commonApp.store, 'get', function *() {
+      mm(commonApp.store, 'get', async () => {
         throw new Error('mock get error');
       });
       request(commonApp)
@@ -110,7 +110,7 @@ describe('test/store.test.js', function () {
       .set('cookie', cookie)
       .expect(200)
       .expect(/2/, function () {
-        mm(commonApp.store, 'set', function *() {
+        mm(commonApp.store, 'set', async () => {
           throw new Error('mock set error');
         });
         request(commonApp)
@@ -122,7 +122,7 @@ describe('test/store.test.js', function () {
     });
 
     it('should handler session error when store.set error and logic error', function (done) {
-      mm(commonApp.store, 'set', function *() {
+      mm(commonApp.store, 'set', async () => {
         throw new Error('mock set error');
       });
       request(commonApp)
@@ -162,7 +162,7 @@ describe('test/store.test.js', function () {
     });
 
     it('should get session error when store.get error', function (done) {
-      mm(deferApp.store, 'get', function *() {
+      mm(deferApp.store, 'get', async () => {
         throw new Error('mock get error');
       });
       request(deferApp)
@@ -172,7 +172,7 @@ describe('test/store.test.js', function () {
     });
 
     it('should get /session/notuse ok when store.get error', function (done) {
-      mm(deferApp.store, 'get', function *() {
+      mm(deferApp.store, 'get', async () => {
         throw new Error('mock get error');
       });
       request(deferApp)
@@ -187,7 +187,7 @@ describe('test/store.test.js', function () {
       .set('cookie', cookie)
       .expect(200)
       .expect(/2/, function () {
-        mm(commonApp.store, 'set', function *() {
+        mm(commonApp.store, 'set', async () => {
           throw new Error('mock set error');
         });
         request(commonApp)

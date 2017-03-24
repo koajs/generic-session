@@ -9,7 +9,7 @@ app.use(session({
   store: new RedisStore()
 }));
 
-app.use(function *() {
+app.use(async function() {
   switch (this.path) {
   case '/get':
     get.call(this);

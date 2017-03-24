@@ -18,7 +18,7 @@ var uid = require('uid-safe').sync;
 var session = require('../../');
 var Store = require('./store');
 
-var app = koa();
+var app = new koa();
 
 app.name = 'koa-session-test';
 app.outputErrors = true;
@@ -27,20 +27,20 @@ app.proxy = true; // to support `X-Forwarded-*` header
 
 var store = new Store();
 
-app.use(function*(next) {
+app.use(async function(next) {
   try {
-    yield next;
+    await next;
   } catch (err) {
     this.status = err.status || 500;
     this.body = err.message;
   }
 });
 
-app.use(function*(next) {
+app.use(async function(next) {
   if (this.request.query.force_session_id) {
     this.sessionId = this.request.query.force_session_id;
   }
-  return yield next;
+  return await next;
 });
 
 app.use(session({
@@ -76,7 +76,7 @@ app.use(session({
   }
 }));
 
-app.use(function *controllers() {
+app.use(async function controllers() {
   switch (this.request.path) {
   case '/favicon.ico':
     this.status = 404;
@@ -110,11 +110,11 @@ app.use(function *controllers() {
     getId(this);
     break;
   case '/session/regenerate':
-    yield regenerate(this);
+    await regenerate(this);
     break;
   case '/session/regenerateWithData':
     this.session.foo = 'bar';
-    yield regenerate(this);
+    await regenerate(this);
     this.body = { foo: this.session.foo, hasSession: this.session !== undefined };
     break;
   default:
@@ -157,8 +157,8 @@ function getId(ctx) {
   ctx.body = ctx.sessionId;
 }
 
-function *regenerate(ctx) {
-  yield ctx.regenerateSession();
+async function regenerate(ctx) {
+  await ctx.regenerateSession();
   ctx.session.data = 'foo';
   getId(ctx);
 }
