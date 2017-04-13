@@ -1,36 +1,36 @@
 
-var koa = require('koa');
-var session = require('..');
-var RedisStore = require('koa-redis');
+const koa = require('koa')
+const session = require('..')
+const RedisStore = require('koa-redis')
 
-var app = koa();
-app.keys = ['keys', 'keykeys'];
+var app = koa()
+app.keys = ['keys', 'keykeys']
 app.use(session({
   defer: true,
   store: new RedisStore()
-}));
+}))
 
-app.use(function *() {
+app.use(ctx => {
   switch (this.path) {
   case '/get':
-    yield get.call(this);
-    break;
+    await get(ctx)
+    break
   case '/remove':
-    remove.call(this);
-    break;
+    remove(ctx)
+    break
   }
-});
+})
 
-function* get() {
-  var session = yield this.session;
-  session.count = session.count || 0;
-  session.count++;
-  this.body = session.count;
+async function get(ctx) {
+  const session = await ctx.session
+  session.count = session.count || 0
+  session.count++
+  ctx.body = session.count
 }
 
 function remove() {
-  this.session = null;
-  this.body = 0;
+  ctx.session = null
+  ctx.body = 0
 }
 
-app.listen(8080);
+app.listen(8080)

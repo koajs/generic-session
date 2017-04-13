@@ -7,24 +7,24 @@
  *   Evan King <evan.king@bluespurs.com> (http://honoredsoft.com)
  */
 
-'use strict';
+
 
 /**
  * Module dependencies.
  */
-var koa = require('koa');
-var http = require('http');
-var session = require('../../');
-var Store = require('./store');
+const koa = require('koa')
+const http = require('http')
+const session = require('../..')
+const Store = require('./store')
 
-var app = koa();
+const app = new koa()
 
-app.name = 'koa-session-test';
-app.outputErrors = true;
-app.keys = ['keys', 'keykeys'];
-app.proxy = true; // to support `X-Forwarded-*` header
+app.name = 'koa-session-test'
+app.outputErrors = true
+app.keys = ['keys', 'keykeys']
+app.proxy = true // to support `X-Forwarded-*` header
 
-var store = new Store();
+const store = new Store()
 
 app.use(session({
   key: 'koss:test_sid',
@@ -36,50 +36,50 @@ app.use(session({
   },
   store: store,
   rolling: false,
-}));
+}))
 
-app.use(function *controllers() {
-  switch (this.request.path) {
-  case '/session/read/force':
-    this.sessionSave = true;
-  case '/session/read':
-    read(this);
-    break;
+app.use(function controllers(ctx) {
+  switch (ctx.request.path) {
+    case '/session/read/force':
+      ctx.sessionSave = true // eslint-disable-next-line
+    case '/session/read':
+      read(ctx)
+      break
 
-  case '/session/update/prevent':
-    this.sessionSave = false;
-  case '/session/update':
-    update(this);
-    break;
+    case '/session/update/prevent':
+      ctx.sessionSave = false // eslint-disable-next-line
+    case '/session/update':
+      update(ctx)
+      break
 
-  case '/session/remove/prevent':
-    this.sessionSave = false;
-    remove(this);
-    break;
+    case '/session/remove/prevent':
+      ctx.sessionSave = false
+      remove(ctx)
+      break
 
-  case '/session/remove/force':
-    this.sessionSave = true;
-    remove(this);
-    break;
+    case '/session/remove/force':
+      ctx.sessionSave = true
+      remove(ctx)
+      break
   }
 
-  this.body = this.body + ', ' + this.sessionSave;
-});
+  ctx.body = ctx.body + ', ' + ctx.sessionSave
+})
 
 function read(ctx) {
-  ctx.session.count = ctx.session.count || 0;
-  ctx.body = String(ctx.session.count);
+  ctx.session.count = ctx.session.count || 0
+  ctx.body = String(ctx.session.count)
 }
 
 function update(ctx) {
-  ctx.session.count = ctx.session.count || 0;
-  ctx.session.count++;
-  ctx.body = String(ctx.session.count);
+  ctx.session.count = ctx.session.count || 0
+  ctx.session.count++
+  ctx.body = String(ctx.session.count)
 }
 
 function remove(ctx) {
-  ctx.session = null;
-  ctx.body = '0';
+  ctx.session = null
+  ctx.body = '0'
 }
 
-var app = module.exports = http.createServer(app.callback());
+module.exports = http.createServer(app.callback())
