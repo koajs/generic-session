@@ -14,7 +14,7 @@
  */
 var koa = require('koa');
 var http = require('http');
-var session = require('../../');
+var session = require('../../lib/session');
 var Store = require('./store');
 
 var app = new koa();

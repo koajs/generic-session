@@ -15,7 +15,7 @@
 var koa = require('koa');
 var http = require('http');
 var uid = require('uid-safe').sync;
-var session = require('../../');
+var session = require('../../lib/session');
 var Store = require('./store');
 
 var app = new koa();
