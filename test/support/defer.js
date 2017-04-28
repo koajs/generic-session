@@ -17,7 +17,7 @@ var http = require('http');
 var session = require('../../');
 var Store = require('./store');
 
-var app = koa();
+var app = new koa();
 
 app.name = 'koa-session-test';
 app.outputErrors = true;

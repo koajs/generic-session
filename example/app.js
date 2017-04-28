@@ -3,7 +3,7 @@ var koa = require('koa');
 var session = require('..');
 var RedisStore = require('koa-redis');
 
-var app = koa();
+var app = new koa();
 app.keys = ['keys', 'keykeys'];
 app.use(session({
   store: new RedisStore()

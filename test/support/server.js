@@ -18,7 +18,7 @@ var uid = require('uid-safe').sync;
 var session = require('../../');
 var Store = require('./store');
 
-var app = koa();
+var app = new koa();
 
 app.name = 'koa-session-test';
 app.outputErrors = true;
