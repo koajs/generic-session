@@ -11,6 +11,7 @@ test:
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		--require should \
+		--require babel-core/register \
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
@@ -22,6 +23,7 @@ test-cov:
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		--require should \
+		--require babel-core/register \
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
@@ -33,6 +35,7 @@ test-travis:
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		--require should \
+		--require babel-core/register \
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
