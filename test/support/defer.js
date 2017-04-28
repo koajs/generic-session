@@ -24,12 +24,12 @@ app.outputErrors = true;
 app.keys = ['keys', 'keykeys'];
 app.proxy = true; // to support `X-Forwarded-*` header
 
-app.use(function*(next) {
+app.use(async (ctx, next) => {
   try {
-    yield next;
+    await next();
   } catch (err) {
-    this.status = err.status || 500;
-    this.body = err.message;
+    ctx.status = err.status || 500;
+    ctx.body = err.message;
   }
 });
 
@@ -55,44 +55,44 @@ app.use(session({
   defer: true
 }));
 
-app.use(function *controllers() {
-  switch (this.request.url) {
-  case '/favicon.ico':
-    this.staus = 404;
-    break;
-  case '/wrongpath':
-    this.body = this.session ? 'has session' : 'no session';
-    break;
-  case '/session/rewrite':
-    this.session = {foo: 'bar'};
-    this.body = yield this.session;
-    break;
-  case '/session/notuse':
-    nosession(this);
-    break;
-  case '/session/get':
-    yield get(this);
-    break;
-  case '/session/nothing':
-    yield nothing(this);
-    break;
-  case '/session/remove':
-    yield remove(this);
-    break;
-  case '/session/httponly':
-    yield switchHttpOnly(this);
-    break;
-  case '/session/regenerate':
-    yield regenerate(this);
-    break;
-  case '/session/regenerateWithData':
-    var session = yield this.session;
-    session.foo = 'bar';
-    session = yield regenerate(this);
-    this.body = { foo : session.foo, hasSession: session !== undefined };
-    break;
-  default:
-    yield other(this);
+app.use(async function controllers(ctx) {
+  switch (ctx.request.url) {
+    case '/favicon.ico':
+      ctx.status = 404;
+      break;
+    case '/wrongpath':
+      ctx.body = ctx.session ? 'has session' : 'no session';
+      break;
+    case '/session/rewrite':
+      ctx.session = { foo: 'bar' };
+      ctx.body = await ctx.session;
+      break;
+    case '/session/notuse':
+      nosession(ctx);
+      break;
+    case '/session/get':
+      await get(ctx);
+      break;
+    case '/session/nothing':
+      await nothing(ctx);
+      break;
+    case '/session/remove':
+      await remove(ctx);
+      break;
+    case '/session/httponly':
+      await switchHttpOnly(ctx);
+      break;
+    case '/session/regenerate':
+      await regenerate(ctx);
+      break;
+    case '/session/regenerateWithData':
+      let session = await ctx.session;
+      session.foo = 'bar';
+      session = await regenerate(ctx);
+      ctx.body = { foo : session.foo, hasSession: session !== undefined };
+      break;
+    default:
+      await other(ctx);
   }
 });
 
@@ -100,36 +100,36 @@ function nosession(ctx) {
   ctx.body = ctx._session !== undefined ? 'has session' : 'no session';
 }
 
-function *nothing(ctx) {
-  ctx.body = String((yield ctx.session).count);
+async function nothing(ctx) {
+  ctx.body = String((await ctx.session).count);
 }
 
-function *get(ctx) {
-  var session = yield ctx.session;
-  session = yield ctx.session;
+async function get(ctx) {
+  let session = await ctx.session;
+  session = await ctx.session;
   session.count = session.count || 0;
   session.count++;
   ctx.body = String(session.count);
 }
 
-function *remove(ctx) {
+function remove(ctx) {
   ctx.session = null;
   ctx.body = 0;
 }
 
-function *switchHttpOnly(ctx) {
-  var session = yield ctx.session;
-  var httpOnly = session.cookie.httpOnly;
+async function switchHttpOnly(ctx) {
+  const session = await ctx.session;
+  const httpOnly = session.cookie.httpOnly;
   session.cookie.httpOnly = !httpOnly;
   ctx.body = 'httpOnly: ' + !httpOnly;
 }
 
-function *other(ctx) {
+function other(ctx) {
   ctx.body = ctx.session ? 'has session' : 'no session';
 }
 
-function *regenerate(ctx) {
-  var session = yield ctx.regenerateSession();
+async function regenerate(ctx) {
+  const session = await ctx.regenerateSession();
   session.data = 'foo';
   ctx.body = ctx.sessionId;
   return session;

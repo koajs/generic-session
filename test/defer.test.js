@@ -7,168 +7,161 @@
  *   dead_horse <dead_horse@qq.com> (http://deadhorse.me)
  */
 
-'use strict';
-
 /**
  * Module dependencies.
  */
 
-var Session = require('..');
-var koa = require('koa');
-var app = require('./support/defer');
-var request = require('supertest');
-var mm = require('mm');
-var should = require('should');
-var EventEmitter = require('events').EventEmitter;
+const app = require('./support/defer')
+const request = require('supertest')
 
-describe('test/defer.test.js', function () {
+describe('test/defer.test.js', () => {
 
-  describe('use', function () {
-    var cookie;
-    var mockCookie = 'koa.sid=s:dsfdss.PjOnUyhFG5bkeHsZ1UbEY7bDerxBINnZsD5MUguEph8; path=/; httponly';
-    it('should GET /session/get ok', function (done) {
-      request(app)
-      .get('/session/get')
-      .expect(/1/)
-      .end(function (err, res) {
-        cookie = res.headers['set-cookie'].join(';');
-        done();
-      });
-    });
+  describe('use', () => {
+    let cookie
+    const mockCookie = 'koa.sid=s:dsfdss.PjOnUyhFG5bkeHsZ1UbEY7bDerxBINnZsD5MUguEph8; path=/; httponly'
 
-    it('should GET /session/get second ok', function (done) {
-      request(app)
-      .get('/session/get')
-      .set('cookie', cookie)
-      .expect(/2/, done);
-    });
+    it('should GET /session/get ok', async () => {
 
-    it('should GET /session/httponly ok', function (done) {
-      request(app)
-      .get('/session/httponly')
-      .set('cookie', cookie)
-      .expect(/httpOnly: false/, function (err, res) {
-        should.not.exist(err);
-        cookie = res.headers['set-cookie'].join(';');
-        cookie.indexOf('httponly').should.equal(-1);
-        cookie.indexOf('expires=').should.above(0);
-        request(app)
+      const res = await request(app)
+        .get('/session/get')
+        .expect(/1/)
+
+      cookie = res.headers['set-cookie'].join(';')
+    })
+
+    it('should GET /session/get second ok', () => {
+      return request(app)
         .get('/session/get')
         .set('cookie', cookie)
-        .expect(/3/, done);
-      });
-    });
+        .expect(/2/)
+    })
 
-    it('should GET /session/httponly twice ok', function (done) {
-      request(app)
+    it('should GET /session/httponly ok', async () => {
+      const res = await request(app)
+        .get('/session/httponly')
+        .set('cookie', cookie)
+        .expect(/httpOnly: false/)
+
+      cookie = res.headers['set-cookie'].join(';')
+      cookie.indexOf('httponly').should.equal(-1)
+      cookie.indexOf('expires=').should.above(0)
+
+      await request(app)
+        .get('/session/get')
+        .set('cookie', cookie)
+        .expect(/3/)
+    })
+
+    it('should GET /session/httponly twice ok', async () => {
+
+      const res = await request(app)
       .get('/session/httponly')
       .set('cookie', cookie)
-      .expect(/httpOnly: true/, function (err, res) {
-        should.not.exist(err);
-        cookie = res.headers['set-cookie'].join(';');
-        cookie.indexOf('httponly').should.above(0);
-        cookie.indexOf('expires=').should.above(0);
-        done();
-      });
-    });
+      .expect(/httpOnly: true/)
 
-    it('should another user GET /session/get ok', function (done) {
-      request(app)
-      .get('/session/get')
-      .expect(/1/, done);
-    });
+      cookie = res.headers['set-cookie'].join(';')
+      cookie.indexOf('httponly').should.above(0)
+      cookie.indexOf('expires=').should.above(0)
+    })
 
-    it('should GET /session/nothing ok', function (done) {
-      request(app)
+
+    it('should another user GET /session/get ok', () => {
+      return request(app)
+        .get('/session/get')
+        .expect(/1/)
+    })
+
+    it('should GET /session/nothing ok', () => {
+      return request(app)
         .get('/session/nothing')
         .set('cookie', cookie)
-        .expect(/3/, done);
-    });
+        .expect(/3/)
+    })
 
-    it('should GET /session/notuse response no session', function (done) {
-      request(app)
-      .get('/session/notuse')
-      .set('cookie', cookie)
-      .expect(/no session/, done);
-    });
+    it('should GET /session/notuse response no session', () => {
+      return request(app)
+        .get('/session/notuse')
+        .set('cookie', cookie)
+        .expect(/no session/)
+    })
 
-    it('should GET /wrongpath response no session', function (done) {
-      request(app)
-      .get('/wrongpath')
-      .set('cookie', cookie)
-      .expect(/no session/, done);
-    });
+    it('should GET /wrongpath response no session', () => {
+      return request(app)
+        .get('/wrongpath')
+        .set('cookie', cookie)
+        .expect(/no session/)
+    })
 
-    it('should wrong cookie GET /session/get ok', function (done) {
-      request(app)
-      .get('/session/get')
-      .set('cookie', mockCookie)
-      .expect(/1/, done);
-    });
+    it('should wrong cookie GET /session/get ok', () => {
+      return request(app)
+        .get('/session/get')
+        .set('cookie', mockCookie)
+        .expect(/1/)
+    })
 
-    it('should wrong cookie GET /session/get twice ok', function (done) {
-      request(app)
-      .get('/session/get')
-      .set('cookie', mockCookie)
-      .expect(/1/, done);
-    });
+    it('should wrong cookie GET /session/get twice ok', () => {
+      return request(app)
+        .get('/session/get')
+        .set('cookie', mockCookie)
+        .expect(/1/)
+    })
 
-    it('should GET /session/remove ok', function (done) {
-      request(app)
-      .get('/session/remove')
-      .set('cookie', cookie)
-      .expect(/0/, function () {
-        request(app)
+    it('should GET /session/remove ok', async () => {
+      await request(app)
+        .get('/session/remove')
+        .set('cookie', cookie)
+        .expect(/0/)
+
+      await request(app)
         .get('/session/get')
         .set('cookie', cookie)
-        .expect(/1/, done);
-      });
-    });
+        .expect(/1/)
+    })
 
-    it('should GET / error by session ok', function (done) {
-      request(app)
-      .get('/')
-      .expect(/no session/, done);
-    });
+    it('should GET / error by session ok', () => {
+      return request(app)
+        .get('/')
+        .expect(/no session/)
+    })
 
-    it('should GET /session ok', function (done) {
-      request(app)
-      .get('/session')
-      .expect(/has session/, done);
-    });
+    it('should GET /session ok', () => {
+      return request(app)
+        .get('/session')
+        .expect(/has session/)
+    })
 
-    it('should GET /session/remove before get ok', function (done) {
-      request(app)
-      .get('/session/remove')
-      .expect(/0/, done);
-    });
+    it('should GET /session/remove before get ok', () => {
+      return request(app)
+        .get('/session/remove')
+        .expect(/0/)
+    })
 
-    it('should rewrite session before get ok', function (done) {
-      request(app)
-      .get('/session/rewrite')
-      .expect({foo: 'bar'}, done);
-    });
+    it('should rewrite session before get ok', () => {
+      return request(app)
+        .get('/session/rewrite')
+        .expect({ foo: 'bar' })
+    })
 
-    it('should regenerate existing sessions', function (done) {
-      var agent = request.agent(app)
-      agent
-      .get('/session/get')
-      .expect(/.+/, function(err, res) {
-        var firstId = res.body;
-        agent
+    it('should regenerate existing sessions', async () => {
+      const agent = request.agent(app)
+      const res1 = await agent
+        .get('/session/get')
+        .expect(/.+/)
+
+      const firstId = res1.body
+
+      const res2 = await agent
         .get('/session/regenerate')
-        .expect(/.+/, function(err, res) {
-          var secondId = res.body;
-          secondId.should.not.equal(firstId);
-          done();
-        });
-      });
-    });
+        .expect(/.+/)
 
-    it('should regenerate new sessions', function (done) {
-      request(app)
-      .get('/session/regenerateWithData')
-      .expect({ /* foo: undefined, */ hasSession: true }, done);
-    });
-  });
-});
+      const secondId = res2.body
+      secondId.should.not.equal(firstId)
+    })
+
+    it('should regenerate new sessions', () => {
+      return request(app)
+        .get('/session/regenerateWithData')
+        .expect({ /* foo: undefined, */ hasSession: true })
+    })
+  })
+})

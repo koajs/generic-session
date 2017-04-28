@@ -9,13 +9,13 @@ app.use(session({
   store: new RedisStore()
 }));
 
-app.use(function *() {
-  switch (this.path) {
+app.use(ctx => {
+  switch (ctx.path) {
   case '/get':
-    get.call(this);
+    get(ctx);
     break;
   case '/remove':
-    remove.call(this);
+    remove(ctx);
     break;
   }
 });

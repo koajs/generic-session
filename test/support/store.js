@@ -4,38 +4,39 @@
  * MIT Licensed
  */
 
-'use strict';
+'use strict'
 
 /**
  * Module dependencies.
  */
 
-var util = require('util');
-var EventEmitter = require('events').EventEmitter;
+const EventEmitter = require('events').EventEmitter;
 
-var Store = module.exports = function () {
-  this.sessions = {};
-  EventEmitter.call(this);
-};
-
-util.inherits(Store, EventEmitter);
-
-Store.prototype.get = function *(sid) {
-  var session = this.sessions[sid];
-  if (!session) {
-    return null;
+class Store extends EventEmitter {
+  constructor(...args) {
+    super(...args);
+    this.sessions = {};
   }
-  var r = {};
-  for (var key in session) {
-    r[key] = session[key];
+
+  get(sid) {
+    const session = this.sessions[sid];
+    if (!session) {
+      return null;
+    }
+    const r = {};
+    for (const key in session) {
+      r[key] = session[key];
+    }
+    return r;
   }
-  return r;
-};
 
-Store.prototype.set = function *(sid, val) {
-  this.sessions[sid] = val;
-};
+  set(sid, val) {
+    this.sessions[sid] = val;
+  }
 
-Store.prototype.destroy = function *(sid) {
-  delete this.sessions[sid];
-};
+  destroy(sid) {
+    delete this.sessions[sid];
+  }
+}
+
+module.exports = Store;

@@ -10,13 +10,13 @@ app.use(session({
   store: new RedisStore()
 }));
 
-app.use(function *() {
+app.use(ctx => {
   switch (this.path) {
   case '/get':
-    yield get.call(this);
+    await get(ctx);
     break;
   case '/remove':
-    remove.call(this);
+    remove(ctx);
     break;
   }
 });

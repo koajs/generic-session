@@ -38,32 +38,32 @@ app.use(session({
   rolling: false,
 }));
 
-app.use(function *controllers() {
-  switch (this.request.path) {
-  case '/session/read/force':
-    this.sessionSave = true;
-  case '/session/read':
-    read(this);
-    break;
+app.use(function controllers(ctx) {
+  switch (ctx.request.path) {
+    case '/session/read/force':
+      ctx.sessionSave = true;
+    case '/session/read':
+      read(ctx);
+      break;
 
-  case '/session/update/prevent':
-    this.sessionSave = false;
-  case '/session/update':
-    update(this);
-    break;
+    case '/session/update/prevent':
+      ctx.sessionSave = false;
+    case '/session/update':
+      update(ctx);
+      break;
 
-  case '/session/remove/prevent':
-    this.sessionSave = false;
-    remove(this);
-    break;
+    case '/session/remove/prevent':
+      ctx.sessionSave = false;
+      remove(ctx);
+      break;
 
-  case '/session/remove/force':
-    this.sessionSave = true;
-    remove(this);
-    break;
+    case '/session/remove/force':
+      ctx.sessionSave = true;
+      remove(ctx);
+      break;
   }
 
-  this.body = this.body + ', ' + this.sessionSave;
+  ctx.body = ctx.body + ', ' + ctx.sessionSave;
 });
 
 function read(ctx) {

@@ -27,21 +27,21 @@ app.proxy = true; // to support `X-Forwarded-*` header
 
 var store = new Store();
 
-app.use(function*(next) {
+app.use(async (ctx, next) => {
   try {
-    yield next;
+    await next();
   } catch (err) {
-    this.status = err.status || 500;
-    this.body = err.message;
+    ctx.status = err.status || 500;
+    ctx.body = err.message;
   }
-});
+})
 
-app.use(function*(next) {
-  if (this.request.query.force_session_id) {
-    this.sessionId = this.request.query.force_session_id;
+app.use((ctx, next) => {
+  if (ctx.request.query.force_session_id) {
+    ctx.sessionId = ctx.request.query.force_session_id;
   }
-  return yield next;
-});
+  return next();
+})
 
 app.use(session({
   key: 'koss:test_sid',
@@ -76,49 +76,49 @@ app.use(session({
   }
 }));
 
-app.use(function *controllers() {
-  switch (this.request.path) {
-  case '/favicon.ico':
-    this.status = 404;
-    break;
-  case '/wrongpath':
-    this.body = !this.session ? 'no session' : 'has session';
-    break;
-  case '/session/rewrite':
-    this.session = {foo: 'bar'};
-    this.body = this.session;
-    break;
-  case '/session/notuse':
-    this.body = 'not touch session';
-    break;
-  case '/session/get':
-    get(this);
-    break;
-  case '/session/get_error':
-    getError(this);
-    break;
-  case '/session/nothing':
-    nothing(this);
-    break;
-  case '/session/remove':
-    remove(this);
-    break;
-  case '/session/httponly':
-    switchHttpOnly(this);
-    break;
-  case '/session/id':
-    getId(this);
-    break;
-  case '/session/regenerate':
-    yield regenerate(this);
-    break;
-  case '/session/regenerateWithData':
-    this.session.foo = 'bar';
-    yield regenerate(this);
-    this.body = { foo: this.session.foo, hasSession: this.session !== undefined };
-    break;
-  default:
-    other(this);
+app.use(async function controllers(ctx) {
+  switch (ctx.request.path) {
+    case '/favicon.ico':
+      ctx.status = 404;
+      break;
+    case '/wrongpath':
+      ctx.body = !ctx.session ? 'no session' : 'has session';
+      break;
+    case '/session/rewrite':
+      ctx.session = { foo: 'bar' };
+      ctx.body = ctx.session;
+      break;
+    case '/session/notuse':
+      ctx.body = 'not touch session';
+      break;
+    case '/session/get':
+      get(ctx);
+      break;
+    case '/session/get_error':
+      getError(ctx);
+      break;
+    case '/session/nothing':
+      nothing(ctx);
+      break;
+    case '/session/remove':
+      remove(ctx);
+      break;
+    case '/session/httponly':
+      switchHttpOnly(ctx);
+      break;
+    case '/session/id':
+      getId(ctx);
+      break;
+    case '/session/regenerate':
+      await regenerate(ctx);
+      break;
+    case '/session/regenerateWithData':
+      ctx.session.foo = 'bar';
+      await regenerate(ctx);
+      ctx.body = { foo: ctx.session.foo, hasSession: ctx.session !== undefined };
+      break;
+    default:
+      other(ctx);
   }
 });
 
@@ -157,8 +157,8 @@ function getId(ctx) {
   ctx.body = ctx.sessionId;
 }
 
-function *regenerate(ctx) {
-  yield ctx.regenerateSession();
+async function regenerate(ctx) {
+  await ctx.regenerateSession();
   ctx.session.data = 'foo';
   getId(ctx);
 }

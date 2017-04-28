@@ -38,16 +38,16 @@ app.use(session({
   rolling: true,
 }));
 
-app.use(function *controllers() {
-  switch (this.request.path) {
-  case '/session/get':
-    get(this);
-    break;
-  case '/session/remove':
-    remove(this);
-    break;
-  case '/session/nothing':
-    nothing(this);
+app.use(function controllers(ctx) {
+  switch (ctx.request.path) {
+    case '/session/get':
+      get(ctx);
+      break;
+    case '/session/remove':
+      remove(ctx);
+      break;
+    case '/session/nothing':
+      nothing(ctx);
   }
 });
 
