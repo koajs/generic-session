@@ -3,6 +3,11 @@
   "description": "koa generic session store by memory, redis or others",
   "repository": "koajs/generic-session",
   "version": "1.11.5",
+  "main": "lib/session",
+  "engines": {
+    "node": ">= 7.6"
+  },
+  "license": "MIT",
   "files": [
     "lib",
     "index.js"
@@ -15,26 +20,25 @@
   "author": "dead_horse <dead_horse@qq.com>",
   "dependencies": {
     "copy-to": "~2.0.1",
-    "crc": "~3.4.0",
-    "debug": "*",
+    "crc": "~3.4.4",
+    "debug": "~2.6.3",
     "parseurl": "~1.3.1",
-    "uid-safe": "~2.1.1"
+    "uid-safe": "~2.1.4"
   },
   "devDependencies": {
-    "autod": "~2.1.3",
-    "blanket": "*",
-    "contributors": "*",
-    "istanbul-harmony": "*",
-    "koa": "^1.2.4",
-    "koa-redis": "~2.1.1",
-    "mm": "~1.5.0",
-    "mocha": "2",
-    "pedding": "^1.0.0",
-    "should": "~10.0.0",
-    "supertest": "~2.0.1"
+    "babel-eslint": "^7.2.2",
+    "eslint": "^3.19.0",
+    "istanbul": "^0.4.5",
+    "koa": "^2.2.0",
+    "mm": "^2.1.0",
+    "mocha": "^3.2.0",
+    "should": "^11.2.1",
+    "supertest": "^3.0.0"
   },
-  "engines": {
-    "node": ">= 0.11.9"
-  },
-  "license": "MIT"
+  "scripts": {
+    "lint": "eslint lib test",
+    "test": "NODE_ENV=test mocha --timeout 3000 --require should test/*.test.js",
+    "test-cov": "NODE_ENV=test istanbul cover _mocha -- -u exports --timeout 3000 --require should test/*.test.js",
+    "test-travis": "NODE_ENV=test istanbul cover _mocha --report lcovonly -- -u exports --reporter 3000 --timeout 3000 --require should test/*.test.js"
+  }
 }

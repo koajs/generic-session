@@ -7,41 +7,41 @@
  *   dead_horse <dead_horse@qq.com> (http://deadhorse.me)
  */
 
-'use strict';
+
 
 /**
  * Module dependencies.
  */
-var koa = require('koa');
-var http = require('http');
-var uid = require('uid-safe').sync;
-var session = require('../../');
-var Store = require('./store');
+const koa = require('koa')
+const http = require('http')
+const uid = require('uid-safe').sync
+const session = require('../..')
+const Store = require('./store')
 
-var app = koa();
+const app = new koa()
 
-app.name = 'koa-session-test';
-app.outputErrors = true;
-app.keys = ['keys', 'keykeys'];
-app.proxy = true; // to support `X-Forwarded-*` header
+app.name = 'koa-session-test'
+app.outputErrors = true
+app.keys = ['keys', 'keykeys']
+app.proxy = true // to support `X-Forwarded-*` header
 
-var store = new Store();
+const store = new Store()
 
-app.use(function*(next) {
+app.use(async (ctx, next) => {
   try {
-    yield next;
+    await next()
   } catch (err) {
-    this.status = err.status || 500;
-    this.body = err.message;
+    ctx.status = err.status || 500
+    ctx.body = err.message
   }
-});
+})
 
-app.use(function*(next) {
-  if (this.request.query.force_session_id) {
-    this.sessionId = this.request.query.force_session_id;
+app.use((ctx, next) => {
+  if (ctx.request.query.force_session_id) {
+    ctx.sessionId = ctx.request.query.force_session_id
   }
-  return yield next;
-});
+  return next()
+})
 
 app.use(session({
   key: 'koss:test_sid',
@@ -53,16 +53,16 @@ app.use(session({
   },
   store: store,
   genSid: function(len) {
-    return uid(len) + this.request.query.test_sid_append;
+    return uid(len) + this.request.query.test_sid_append
   },
   beforeSave: function (ctx, session) {
-    session.path = ctx.path;
+    session.path = ctx.path
   },
-  valid: function (ctx, session) {
-    return ctx.query.valid !== 'false';
+  valid: function (ctx) {
+    return ctx.query.valid !== 'false'
   },
   reconnectTimeout: 100
-}));
+}))
 
 // will ignore repeat session
 app.use(session({
@@ -72,96 +72,96 @@ app.use(session({
     path: '/session'
   },
   genSid: function(len) {
-    return uid(len) + this.request.query.test_sid_append;
+    return uid(len) + this.request.query.test_sid_append
   }
-}));
+}))
 
-app.use(function *controllers() {
-  switch (this.request.path) {
-  case '/favicon.ico':
-    this.status = 404;
-    break;
-  case '/wrongpath':
-    this.body = !this.session ? 'no session' : 'has session';
-    break;
-  case '/session/rewrite':
-    this.session = {foo: 'bar'};
-    this.body = this.session;
-    break;
-  case '/session/notuse':
-    this.body = 'not touch session';
-    break;
-  case '/session/get':
-    get(this);
-    break;
-  case '/session/get_error':
-    getError(this);
-    break;
-  case '/session/nothing':
-    nothing(this);
-    break;
-  case '/session/remove':
-    remove(this);
-    break;
-  case '/session/httponly':
-    switchHttpOnly(this);
-    break;
-  case '/session/id':
-    getId(this);
-    break;
-  case '/session/regenerate':
-    yield regenerate(this);
-    break;
-  case '/session/regenerateWithData':
-    this.session.foo = 'bar';
-    yield regenerate(this);
-    this.body = { foo: this.session.foo, hasSession: this.session !== undefined };
-    break;
-  default:
-    other(this);
+app.use(async function controllers(ctx) {
+  switch (ctx.request.path) {
+    case '/favicon.ico':
+      ctx.status = 404
+      break
+    case '/wrongpath':
+      ctx.body = !ctx.session ? 'no session' : 'has session'
+      break
+    case '/session/rewrite':
+      ctx.session = { foo: 'bar' }
+      ctx.body = ctx.session
+      break
+    case '/session/notuse':
+      ctx.body = 'not touch session'
+      break
+    case '/session/get':
+      get(ctx)
+      break
+    case '/session/get_error':
+      getError(ctx)
+      break
+    case '/session/nothing':
+      nothing(ctx)
+      break
+    case '/session/remove':
+      remove(ctx)
+      break
+    case '/session/httponly':
+      switchHttpOnly(ctx)
+      break
+    case '/session/id':
+      getId(ctx)
+      break
+    case '/session/regenerate':
+      await regenerate(ctx)
+      break
+    case '/session/regenerateWithData':
+      ctx.session.foo = 'bar'
+      await regenerate(ctx)
+      ctx.body = { foo: ctx.session.foo, hasSession: ctx.session !== undefined }
+      break
+    default:
+      other(ctx)
   }
-});
+})
 
 function nothing(ctx) {
-  ctx.body = ctx.session.count;
+  ctx.body = ctx.session.count
 }
 
 function get(ctx) {
-  ctx.session.count = ctx.session.count || 0;
-  ctx.session.count++;
-  ctx.body = String(ctx.session.count);
+  ctx.session.count = ctx.session.count || 0
+  ctx.session.count++
+  ctx.body = String(ctx.session.count)
 }
 
 function getError(ctx) {
-  ctx.session.count = ctx.session.count || 0;
-  ctx.session.count++;
-  throw new Error('oops');
+  ctx.session.count = ctx.session.count || 0
+  ctx.session.count++
+  throw new Error('oops')
 }
 
 function remove(ctx) {
-  ctx.session = null;
-  ctx.body = '0';
+  ctx.session = null
+  ctx.body = '0'
 }
 
 function switchHttpOnly(ctx) {
-  var httpOnly = ctx.session.cookie.httpOnly;
-  ctx.session.cookie.httpOnly = !httpOnly;
-  ctx.body = 'httpOnly: ' + !httpOnly;
+  const httpOnly = ctx.session.cookie.httpOnly
+  ctx.session.cookie.httpOnly = !httpOnly
+  ctx.body = 'httpOnly: ' + !httpOnly
 }
 
 function other(ctx) {
-  ctx.body = ctx.session !== undefined ? 'has session' : 'no session';
+  ctx.body = ctx.session !== undefined ? 'has session' : 'no session'
 }
 
 function getId(ctx) {
-  ctx.body = ctx.sessionId;
+  ctx.body = ctx.sessionId
 }
 
-function *regenerate(ctx) {
-  yield ctx.regenerateSession();
-  ctx.session.data = 'foo';
-  getId(ctx);
+async function regenerate(ctx) {
+  await ctx.regenerateSession()
+  ctx.session.data = 'foo'
+  getId(ctx)
 }
 
-var app = module.exports = http.createServer(app.callback());
-app.store = store;
+const server = module.exports = http.createServer(app.callback())
+server.store = store
