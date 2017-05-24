@@ -17,16 +17,16 @@ var http = require('http');
 var session = require('../../');
 var Store = require('./store');
 
-var app = koa();
+var app = new koa();
 
 app.name = 'koa-session-test';
 app.outputErrors = true;
 app.keys = ['keys', 'keykeys'];
 app.proxy = true; // to support `X-Forwarded-*` header
 
-app.use(function*(next) {
+app.use(async function(next) {
   try {
-    yield next;
+    await next;
   } catch (err) {
     this.status = err.status || 500;
     this.body = err.message;
@@ -55,7 +55,7 @@ app.use(session({
   defer: true
 }));
 
-app.use(function *controllers() {
+app.use(async function controllers() {
   switch (this.request.url) {
   case '/favicon.ico':
     this.staus = 404;
@@ -65,34 +65,34 @@ app.use(function *controllers() {
     break;
   case '/session/rewrite':
     this.session = {foo: 'bar'};
-    this.body = yield this.session;
+    this.body = await this.session;
     break;
   case '/session/notuse':
     nosession(this);
     break;
   case '/session/get':
-    yield get(this);
+    await get(this);
     break;
   case '/session/nothing':
-    yield nothing(this);
+    await nothing(this);
     break;
   case '/session/remove':
-    yield remove(this);
+    await remove(this);
     break;
   case '/session/httponly':
-    yield switchHttpOnly(this);
+    await switchHttpOnly(this);
     break;
   case '/session/regenerate':
-    yield regenerate(this);
+    await regenerate(this);
     break;
   case '/session/regenerateWithData':
-    var session = yield this.session;
+    var session = await this.session;
     session.foo = 'bar';
-    session = yield regenerate(this);
+    session = await regenerate(this);
     this.body = { foo : session.foo, hasSession: session !== undefined };
     break;
   default:
-    yield other(this);
+    await other(this);
   }
 });
 
@@ -100,36 +100,36 @@ function nosession(ctx) {
   ctx.body = ctx._session !== undefined ? 'has session' : 'no session';
 }
 
-function *nothing(ctx) {
-  ctx.body = String((yield ctx.session).count);
+async function nothing(ctx) {
+  ctx.body = String((await ctx.session).count);
 }
 
-function *get(ctx) {
-  var session = yield ctx.session;
-  session = yield ctx.session;
+async function get(ctx) {
+  var session = await ctx.session;
+  session = await ctx.session;
   session.count = session.count || 0;
   session.count++;
   ctx.body = String(session.count);
 }
 
-function *remove(ctx) {
+async function remove(ctx) {
   ctx.session = null;
   ctx.body = 0;
 }
 
-function *switchHttpOnly(ctx) {
-  var session = yield ctx.session;
+async function switchHttpOnly(ctx) {
+  var session = await ctx.session;
   var httpOnly = session.cookie.httpOnly;
   session.cookie.httpOnly = !httpOnly;
   ctx.body = 'httpOnly: ' + !httpOnly;
 }
 
-function *other(ctx) {
+async function other(ctx) {
   ctx.body = ctx.session ? 'has session' : 'no session';
 }
 
-function *regenerate(ctx) {
-  var session = yield ctx.regenerateSession();
+async function regenerate(ctx) {
+  var session = await ctx.regenerateSession();
   session.data = 'foo';
   ctx.body = ctx.sessionId;
   return session;
