@@ -2,7 +2,7 @@
   "name": "koa-generic-session",
   "description": "koa generic session store by memory, redis or others",
   "repository": "koajs/generic-session",
-  "version": "1.11.5",
+  "version": "1.11.6",
   "files": [
     "lib",
     "index.js"
