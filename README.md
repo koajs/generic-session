@@ -32,6 +32,8 @@ This middleware will only set a cookie when a session is manually set. Each time
 
 You can use the rolling sessions that will reset the cookie and session for every request which touch the session.  Save behavior can be overridden per request.
 
+**For async/await and Node v6.9.0+ support use v2.x of this package, for older use v1.x**
+
 ## Usage
 
 ### Example
