@@ -42,7 +42,7 @@ var session = require('koa-generic-session');
 var redisStore = require('koa-redis');
 var koa = require('koa');
 
-var app = koa();
+var app = new koa();
 app.keys = ['keys', 'keykeys'];
 app.use(session({
   store: redisStore()

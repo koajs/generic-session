@@ -3,19 +3,19 @@ var koa = require('koa');
 var session = require('..');
 var RedisStore = require('koa-redis');
 
-var app = koa();
+var app = new koa();
 app.keys = ['keys', 'keykeys'];
 app.use(session({
   store: new RedisStore()
 }));
 
-app.use(function *() {
-  switch (this.path) {
+app.use(ctx => {
+  switch (ctx.path) {
   case '/get':
-    get.call(this);
+    get(ctx);
     break;
   case '/remove':
-    remove.call(this);
+    remove(ctx);
     break;
   }
 });

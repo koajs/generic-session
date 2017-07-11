@@ -3,20 +3,20 @@ var koa = require('koa');
 var session = require('..');
 var RedisStore = require('koa-redis');
 
-var app = koa();
+var app = new koa();
 app.keys = ['keys', 'keykeys'];
 app.use(session({
   defer: true,
   store: new RedisStore()
 }));
 
-app.use(function *() {
+app.use(ctx => {
   switch (this.path) {
   case '/get':
-    yield get.call(this);
+    await get(ctx);
     break;
   case '/remove':
-    remove.call(this);
+    remove(ctx);
     break;
   }
 });

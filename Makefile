@@ -6,26 +6,34 @@ MOCHA_OPTS =
 install:
 	@npm install --registry=http://registry.npm.taobao.org
 
+build:
+	@NODE_ENV=production ./node_modules/babel-cli/bin/babel.js -d lib/ src/
+
 test:
+	make build;
 	@NODE_ENV=test ./node_modules/mocha/bin/mocha \
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		--require should \
+		--require babel-core/register \
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
 
 test-cov:
+	make build;
 	@NODE_ENV=test node \
 		node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha \
 		-- -u exports \
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		--require should \
+		--require babel-core/register \
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
 test-travis:
+	make build;
 	@NODE_ENV=test node \
 		node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha \
 		--report lcovonly \
@@ -33,6 +41,7 @@ test-travis:
 		--reporter $(REPORTER) \
 		--timeout $(TIMEOUT) \
 		--require should \
+		--require babel-core/register \
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
