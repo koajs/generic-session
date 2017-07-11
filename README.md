@@ -17,7 +17,7 @@ generic-session
 [coveralls-url]: https://coveralls.io/r/koajs/generic-session?branch=master
 [david-image]: https://img.shields.io/david/koajs/generic-session.svg?style=flat-square
 [david-url]: https://david-dm.org/koajs/generic-session
-[node-image]: https://img.shields.io/badge/node.js-%3E=_0.11-red.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node.js-%3E=_6.0.0-red.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/koa-generic-session.svg?style=flat-square
 [download-url]: https://npmjs.org/package/koa-generic-session
@@ -44,7 +44,7 @@ var session = require('koa-generic-session');
 var redisStore = require('koa-redis');
 var koa = require('koa');
 
-var app = new koa();
+var app = new koa(); // for koa v1 use `var app = koa();`
 app.keys = ['keys', 'keykeys'];
 app.use(session({
   store: redisStore()
