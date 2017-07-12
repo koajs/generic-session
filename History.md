@@ -1,8 +1,13 @@
 
+2.0.0 / 2017-07-11
+==================
+
+* Refactor to koa 2 - Supports node 6.x and 7.x (#123)
+
 1.11.6 / 2017-06-12
 ==================
 
-  * fix: cookie options may be changed
+* fix: cookie options may be changed
 
 1.11.5 / 2017-01-16
 ==================
