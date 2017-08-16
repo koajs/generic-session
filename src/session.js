@@ -45,7 +45,7 @@ const defaultCookie = {
  *   - [`ttl`] store ttl in `ms`, default to oneday
  *   - [`prefix`] session prefix for store, defaulting to `koa:sess:`
  *   - [`cookie`] session cookie settings, defaulting to
- *     {path: '/', httpOnly: true, maxAge: null, rewrite: true, signed: true}
+ *     {path: '/', httpOnly: true, maxAge: null, overwrite: true, signed: true}
  *   - [`defer`] defer get session,
  *   - [`rolling`]  rolling session, always reset the cookie and sessions, default is false
  *     you should `await ctx.session` to get the session if defer is true, default is false

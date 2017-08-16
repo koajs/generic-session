@@ -113,7 +113,7 @@ app.listen(8080);
       path: '/',
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000 //one day in ms,
-      rewrite: true,
+      overwrite: true,
       signed: true
     }
     ```
