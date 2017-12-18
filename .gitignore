@@ -17,3 +17,6 @@ coverage.html
 dump.rdb
 
 lib/
+
+yarn.lock
+package-lock.json
