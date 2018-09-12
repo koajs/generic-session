@@ -1,4 +1,10 @@
 
+1.11.7 / 2018-09-12
+==================
+
+**others**
+  * [[`ef2f295`](http://github.com/koajs/generic-session/commit/ef2f29541b8e35b35c7bff2072616808372fca87)] - deps: pin debug@3 to support node 4 (#130) (fengmk2 <<fengmk2@gmail.com>>)
+
 1.11.6 / 2017-06-12
 ==================
 
