@@ -204,7 +204,7 @@ module.exports = function(options = {}) {
         if (err.code === 'ENOENT') {
           debug('get session error, code = ENOENT')
         } else {
-          debug('get session error: ', err.message)
+          debug('get session error: ', err && err.message)
           errorHandler(err, 'get', ctx)
         }
       }
@@ -287,7 +287,7 @@ module.exports = function(options = {}) {
       sessionIdStore.set.call(ctx, id, session)
       debug('saved')
     } catch (err) {
-      debug('set session error: ', err.message)
+      debug('set session error: ', err && err.message)
       errorHandler(err, 'set', ctx)
     }
   }
@@ -345,14 +345,14 @@ module.exports = function(options = {}) {
     try {
       await next()
     } catch (err) {
-      debug('next logic error: %s', err.message)
+      debug('next logic error: %s', err && err.message)
       firstError = err
     }
     // can't use finally because `refreshSession` is async
     try {
       await refreshSession(ctx, ctx.session, result.originalHash, result.isNew)
     } catch (err) {
-      debug('refresh session error: %s', err.message)
+      debug('refresh session error: %s', err && err.message)
       if (firstError) ctx.app.emit('error', err, ctx)
       firstError = firstError || err
     }
