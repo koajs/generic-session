@@ -324,6 +324,14 @@ module.exports = function(options = {}) {
       }
     })
 
+    ctx.saveSession = async function saveSession() {
+      const result = await getSession(ctx)
+      if (!result) {
+        return next()
+      }
+      return refreshSession(ctx, ctx.session, result.originalHash, result.isNew)
+    }
+
     ctx.regenerateSession = async function regenerateSession() {
       debug('regenerating session')
       if (!result.isNew) {
@@ -415,6 +423,17 @@ module.exports = function(options = {}) {
 
     // internal flag to determine that session is already defined
     ctx.__isSessionDefined = true
+
+    ctx.saveSession = async function saveSession() {
+      // make sure that the session has been loaded
+      await ctx.session
+      
+      const result = await getSession(ctx)
+      if (!result) {
+        return next()
+      }
+      return refreshSession(ctx, ctx.session, result.originalHash, result.isNew)
+    }
 
     ctx.regenerateSession = async function regenerateSession() {
       debug('regenerating session')

@@ -90,6 +90,7 @@ app.listen(8080);
 * Setting `this.session = null;` will destroy this session.
 * Altering `this.session.cookie` changes the cookie options of this user. Also you can use the cookie options in session the store. Use for example `cookie.maxAge` as the session store's ttl.
 * Calling `this.regenerateSession` will destroy any existing session and generate a new, empty one in its place. The new session will have a different ID.
+* Calling `this.saveSession` will save an existing session (this method was added for [koa-redirect-loop](https://github.com/niftylettuce/koa-redirect-loop))
 * Setting `this.sessionSave = true` will force saving the session regardless of any other options or conditions.
 * Setting `this.sessionSave = false` will prevent saving the session regardless of any other options or conditions.
 
