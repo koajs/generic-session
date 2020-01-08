@@ -24,8 +24,6 @@ generic-session
 [gittip-image]: https://img.shields.io/gittip/dead-horse.svg?style=flat-square
 [gittip-url]: https://www.gittip.com/dead-horse/
 
-__Notice: [koa-session](https://github.com/koajs/session) support external store now, please migrate to koa-session.__
-
 Generic session middleware for koa, easy use with custom stores such as [redis](https://github.com/koajs/koa-redis) or [mongo](https://github.com/freakycue/koa-generic-session-mongo), supports defer session getter.
 
 This middleware will only set a cookie when a session is manually set. Each time the session is modified (and only when the session is modified), it will reset the cookie and session.
