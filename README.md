@@ -156,6 +156,19 @@ And use these events to report the store's status.
 - [koa-generic-session-sequelize](https://github.com/natesilva/koa-generic-session-sequelize) to store your session data with the [Sequelize](http://docs.sequelizejs.com/) ORM.
 - [koa-generic-session-knex](https://github.com/EarthlingInteractive/koa-generic-session-knex) to store your session data with the [Knex](http://knexjs.org/) query builder.
 
+## Graceful shutdown
+
+Since this middleware comes with an auto-reconnect feature, it's very likely you can't gracefully shutdown after
+closing the client as generic-session will try to recover the connection, in those cases you can disable reconnect feature (https://github.com/koajs/generic-session/blob/49b45612877d1a1b8a42dc61bfeba46b71f9cb52/src/session.js#L103-L112) desactivating the client emitter (do this only when stopping the server)
+
+Example with ioredis
+```js
+  // ...disconnecting from db
+  redisClient.emit = () => true;
+  await redisClient.quit();
+  // ...stopping the server
+```
+
 ## Licences
 (The MIT License)
 
