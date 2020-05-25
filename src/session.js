@@ -96,7 +96,7 @@ module.exports = function(options = {}) {
     },
 
     reset: function() {
-      this.cookies.set(key, null)
+      this.cookies.set(key, null, { expires: new Date(0) })
     }
   }
 
