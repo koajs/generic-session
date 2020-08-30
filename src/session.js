@@ -49,7 +49,7 @@ const defaultCookie = {
  *   - [`defer`] defer get session,
  *   - [`rolling`]  rolling session, always reset the cookie and sessions, default is false
  *     you should `await ctx.session` to get the session if defer is true, default is false
- *   - [`genSid`] you can use your own generator for sid
+ *   - [`genSid`] you can use your own generator for sid (supports promises/async functions)
  *   - [`errorHandler`] handler for session store get or set error
  *   - [`valid`] valid(ctx, session), valid session value before use it
  *   - [`beforeSave`] beforeSave(ctx, session), hook before save session
@@ -68,7 +68,7 @@ module.exports = function(options = {}) {
     prefix: options.prefix
   })
 
-  const genSid = options.genSid || uid.sync
+  const genSid = options.genSid || uid;
   const valid = options.valid || noop
   const beforeSave = options.beforeSave || noop
 
@@ -194,7 +194,7 @@ module.exports = function(options = {}) {
     if (!ctx.sessionId) {
       debug('session id not exist, generate a new one')
       session = generateSession()
-      ctx.sessionId = genSid.call(ctx, 24)
+      ctx.sessionId = await genSid.call(ctx, 24)
       isNew = true
     } else {
       try {
@@ -215,7 +215,7 @@ module.exports = function(options = {}) {
       !valid(ctx, session)) {
       debug('session is empty or invalid')
       session = generateSession()
-      ctx.sessionId = genSid.call(ctx, 24)
+      ctx.sessionId = await genSid.call(ctx, 24)
       sessionIdStore.reset.call(ctx)
       isNew = true
     }
@@ -341,7 +341,7 @@ module.exports = function(options = {}) {
       }
 
       ctx.session = generateSession()
-      ctx.sessionId = genSid.call(ctx, 24)
+      ctx.sessionId = await genSid.call(ctx, 24)
       sessionIdStore.reset.call(ctx)
 
       debug('created new session: %s', ctx.sessionId)
@@ -447,7 +447,7 @@ module.exports = function(options = {}) {
       }
 
       ctx._session = generateSession()
-      ctx.sessionId = genSid.call(ctx, 24)
+      ctx.sessionId = await genSid.call(ctx, 24)
       sessionIdStore.reset.call(ctx)
       debug('created new session: %s', ctx.sessionId)
       isNew = true

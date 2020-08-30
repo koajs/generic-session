@@ -1,3 +1,4 @@
+**This has moved to Releases, please see <https://github.com/koajs/generic-session/releases>.**
 
 2.0.0 / 2017-07-11
 ==================

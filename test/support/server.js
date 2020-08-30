@@ -14,7 +14,7 @@
  */
 var koa = require('koa');
 var http = require('http');
-var uid = require('uid-safe').sync;
+var uid = require('uid-safe');
 var session = require('../../lib/session');
 var Store = require('./store');
 
@@ -52,8 +52,9 @@ app.use(session({
     path: '/session'
   },
   store: store,
-  genSid: function(len) {
-    return uid(len) + this.request.query.test_sid_append;
+  genSid: async function(len) {
+    const id = await uid(len);
+    return id + this.request.query.test_sid_append;
   },
   beforeSave: function (ctx, session) {
     session.path = ctx.path;
@@ -71,8 +72,9 @@ app.use(session({
     maxAge: 86400,
     path: '/session'
   },
-  genSid: function(len) {
-    return uid(len) + this.request.query.test_sid_append;
+  genSid: async function(len) {
+    const id = await uid(len);
+    return id + this.request.query.test_sid_append;
   }
 }));
 
