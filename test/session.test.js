@@ -235,5 +235,24 @@ describe('test/koa-session.test.js', () => {
         .expect(/2/)
 
     })
+
+    it('should set expires= when destroying a session on all session cookies', async () => {
+
+      const agent = request.agent(app)
+
+      await agent
+        .get('/session/get')
+        .expect(/.+/)
+
+      const res = await agent
+      .get('/session/remove')
+      .expect(/.+/)
+
+      const cookies = res.headers['set-cookie'];
+      cookies.length.should.equal(2);
+      for (const cookie of cookies) {
+        cookie.should.containEql('expires=Thu, 01 Jan 1970 00:00:00 GMT;')
+      }
+    })
   })
 })

@@ -53,8 +53,8 @@ app.use(session({
   },
   store: store,
   genSid: async function(len) {
-    const id = await uid(len);
-    return id + this.request.query.test_sid_append;
+    const str = await uid(len);
+    return str + getSidAppend(this.request.query.test_sid_append);
   },
   beforeSave: function (ctx, session) {
     session.path = ctx.path;
@@ -73,8 +73,8 @@ app.use(session({
     path: '/session'
   },
   genSid: async function(len) {
-    const id = await uid(len);
-    return id + this.request.query.test_sid_append;
+    const str = await uid(len);
+    return str + getSidAppend(this.request.query.test_sid_append);
   }
 }));
 
@@ -163,6 +163,10 @@ async function regenerate(ctx) {
   await ctx.regenerateSession();
   ctx.session.data = 'foo';
   getId(ctx);
+}
+
+function getSidAppend(append) {
+  return append === undefined ? '' : append;
 }
 
 var app = module.exports = http.createServer(app.callback());
