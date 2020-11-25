@@ -72,7 +72,7 @@ module.exports = function(options = {}) {
   const valid = options.valid || noop
   const beforeSave = options.beforeSave || noop
 
-  const cookie = options.cookie || {}
+  const cookie = Object.assign({}, options.cookie)
   copy(defaultCookie).to(cookie)
 
   let storeStatus = 'available'
