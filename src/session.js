@@ -60,7 +60,7 @@ module.exports = function(options = {}) {
 
   const key = options.key || 'koa.sid'
   const client = options.store || new MemoryStore()
-  const errorHandler = options.errorHandler || defaultErrorHanlder
+  const errorHandler = options.errorHandler || defaultErrorHandler
   const reconnectTimeout = options.reconnectTimeout || 10000
 
   const store = new Store(client, {
@@ -486,8 +486,12 @@ function compatMaxage(opts) {
 
 module.exports.MemoryStore = MemoryStore
 
-function defaultErrorHanlder (err, type) {
-  err.name = 'koa-generic-session ' + type + ' error'
+function defaultErrorHandler (err, type) {
+  try {
+    err.name = 'koa-generic-session ' + type + ' error'
+  } catch (_err) {
+    // in case there is no `name` setter available (may only have a getter)
+  }
   throw err
 }
 
