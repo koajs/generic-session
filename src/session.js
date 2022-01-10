@@ -42,7 +42,7 @@ const defaultCookie = {
  * @param {Object} options
  *   - [`key`] cookie name, defaulting to `koa.sid`
  *   - [`store`] session store instance, default to MemoryStore
- *   - [`ttl`] store ttl in `ms`, default to oneday
+ *   - [`ttl`] store ttl in `ms`, default to cookie maxAge/expires
  *   - [`prefix`] session prefix for store, defaulting to `koa:sess:`
  *   - [`cookie`] session cookie settings, defaulting to
  *     {path: '/', httpOnly: true, maxAge: null, overwrite: true, signed: true}
