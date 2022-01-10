@@ -52,7 +52,7 @@ class Store extends EventEmitter {
   }
 
   async set(sid, sess) {
-    let ttl = this.options.ttl
+    let ttl = typeof this.options.ttl === 'function' ? this.options.ttl(sess) : this.options.ttl;
     if (!ttl) {
       const maxAge = sess.cookie && sess.cookie.maxAge
       if (typeof maxAge === 'number') {
