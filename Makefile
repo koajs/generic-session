@@ -4,7 +4,7 @@ TIMEOUT = 3000
 MOCHA_OPTS =
 
 install:
-	@npm install --registry=http://registry.npm.taobao.org
+	@npm install
 
 build:
 	@NODE_ENV=production ./node_modules/babel-cli/bin/babel.js -d lib/ src/
