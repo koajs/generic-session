@@ -2,7 +2,7 @@
   "name": "koa-generic-session",
   "description": "koa generic session store by memory, redis or others",
   "repository": "koajs/generic-session",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "license": "MIT",
   "engines": {
     "node": ">= 6.0.0"
