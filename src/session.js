@@ -92,11 +92,13 @@ module.exports = function(options = {}) {
     },
 
     set: function(sid, session) {
-      this.cookies.set(key, sid, session.cookie)
+      if (!this.headerSent || this.writeable)
+        this.cookies.set(key, sid, session.cookie)
     },
 
     reset: function() {
-      this.cookies.set(key, null, { expires: new Date(0) })
+      if (!this.headerSent || this.writeable)
+        this.cookies.set(key, null, { expires: new Date(0) })
     }
   }
 
@@ -427,7 +429,7 @@ module.exports = function(options = {}) {
     ctx.saveSession = async function saveSession() {
       // make sure that the session has been loaded
       await ctx.session
-      
+
       const result = await getSession(ctx)
       if (!result) {
         return next()
